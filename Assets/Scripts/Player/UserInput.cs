@@ -21,6 +21,7 @@ public class UserInput : MonoBehaviour {
 	private float horizontal;
 	private float vertical;
 	
+	private float maxVelocity		= 50f;
 	private float controlMultiplier	= 0.00f;
 	private float yVelocity;
 	
@@ -156,6 +157,10 @@ public class UserInput : MonoBehaviour {
 		//rigidbody.useGravity = useGravity;
 		rigidbody.AddForce(moveTarget);
 		yVelocity	= moveTarget.y;
+		
+		if(rigidbody.velocity.magnitude > maxVelocity){
+			rigidbody.velocity	= rigidbody.velocity.normalized * maxVelocity;
+		}
 		
 		// If the player moves, start the timer
 		if(!gamemode.HasStarted() && (isJumping || moveTarget.x != 0 || Input.GetButton("Fire1"))){

@@ -57,11 +57,13 @@ public class Platform : MonoBehaviour {
 			if( startPercent > 1 ){
 				startPercent = 1;
 			}
+			Gizmos.color	= new Color(Color.yellow.r,Color.yellow.g,Color.yellow.b,0.25f);
+			Gizmos.DrawCube(transform.position,transform.localScale);
 			Gizmos.color = Color.yellow;
-			Gizmos.DrawWireCube(transform.position,new Vector3(2,1,2));
-			Gizmos.DrawWireCube(transform.position + new Vector3(moveDistance,0,0),new Vector3(2,1,2));
+			Gizmos.DrawWireCube(transform.position,transform.localScale);
+			Gizmos.DrawWireCube(transform.position + new Vector3(moveDistance,0,0),transform.localScale);
 			Gizmos.DrawLine(transform.position,transform.position + new Vector3(moveDistance,0,0));
-			Gizmos.DrawLine(transform.position+new Vector3(0f,-1.5f,0f),transform.position + new Vector3(0f,1.5f,0f));
+			Gizmos.DrawLine(transform.position+new Vector3(0f,-transform.localScale.y,0f),transform.position + new Vector3(0f,transform.localScale.y,0f));
 			if(mover){
 				mover.transform.position = transform.position + new Vector3(moveDistance * startPercent,0,0);
 			}

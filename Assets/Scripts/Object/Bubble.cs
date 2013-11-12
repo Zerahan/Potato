@@ -9,18 +9,17 @@ public class Bubble : MonoBehaviour {
 	
 	private float growTime;
 	private float popTime;
-	
 	private float size;
 	
 	private bool isDestroyed;
 	
 	// Use this for initialization
 	void Start (){
-		size		= Random.Range(1.5f,2f);
+		size		= Random.Range(0.5f,2.0f);
 		growTime	= 3*(size/2f) + 1;
-		popTime		= growTime + Time.time + popMaxTime*Mathf.Pow(1-(size/2.5f)+Random.Range(0f,0.25f),2);
+		popTime	= growTime + Time.time + popMaxTime*Mathf.Pow(1-(size/2.5f)+Random.Range(0f,0.25f),2);
 		transform.localScale	= Vector3.zero;
-		rigidbody.mass			= 1;
+		rigidbody.mass			= 2;
 	}
 	
 	// Update is called once per frame
@@ -39,7 +38,6 @@ public class Bubble : MonoBehaviour {
 		if( popTime < Time.time ){
 			PopBubble();
 		}
-		//*/
 	}
 	
 	void FixedUpdate(){
