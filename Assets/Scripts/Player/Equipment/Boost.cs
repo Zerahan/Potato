@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+//tempchange <- remove this line
 
 public class Boost : MonoBehaviour {
 	public string BUTTON	= "Jump";
