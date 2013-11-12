@@ -33,8 +33,8 @@ public class Bubble : MonoBehaviour {
 				light.range = (1.25f + 2 * (size/2f)) * (1-(growTime/4));
 			}
 		}
-		if(rigidbody.velocity.y > 5 + 10 * (1-(size/2f))){
-			rigidbody.velocity = new Vector3(rigidbody.velocity.x,10,rigidbody.velocity.z);
+		if(rigidbody.velocity.y > 3 + 6 * (1-(size/2f))){
+			rigidbody.velocity = new Vector3(rigidbody.velocity.x,6,rigidbody.velocity.z);
 		}
 		if( popTime < Time.time ){
 			PopBubble();
