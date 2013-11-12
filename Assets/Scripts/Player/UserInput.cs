@@ -106,20 +106,32 @@ public class UserInput : MonoBehaviour {
 		controlMultiplier	= mult;
 	}
 	
+	public void ObjectDestroyed(){
+		Debug.Log("Object Destroyed!");
+		onGround = false;
+	}
+	
 	// Spawns particles and light at the point of collision, and gives the player the ability to jump again.
 	public void OnCollisionEnter(Collision collision){
-		onGround	= true;
-		foreach(ContactPoint contact in collision.contacts){
-			float angle	=  Mathf.Tan(contact.normal.y/contact.normal.x);
-			if( contact.normal.y > 0f || contact.normal.x > 0.5f || contact.normal.x < -0.5f ){
-				isJumping = false;
-				Debug.DrawRay(contact.point, contact.normal * 5, Color.red,1,true);
-				if(light && particle && lastLight < Time.time){
-					lastLight = Time.time + 0.25f;
-					Instantiate(light,new Vector3(contact.point.x,contact.point.y,-2),Quaternion.identity);
-					ParticleSystem p = (ParticleSystem)Instantiate(particle,contact.point,Quaternion.identity);
-					p.transform.eulerAngles = contact.normal;
-					p.startSpeed = 4;
+		if(collision.gameObject){
+			onGround	= true;
+			if((collision.gameObject.GetComponent<Bubble>() && collision.gameObject.GetComponent<Bubble>().IsDestroyed())||(collision.gameObject.GetComponent<BreakableObject>() && collision.gameObject.GetComponent<BreakableObject>().IsDestroyed())){
+				onGround	= false;
+			}
+			if(onGround){
+				foreach(ContactPoint contact in collision.contacts){
+					float angle	=  Mathf.Tan(contact.normal.y/contact.normal.x);
+					if( contact.normal.y > 0f || contact.normal.x > 0.5f || contact.normal.x < -0.5f ){
+						isJumping = false;
+						Debug.DrawRay(contact.point, contact.normal * 5, Color.red,1,true);
+						if(light && particle && lastLight < Time.time){
+							lastLight = Time.time + 0.25f;
+							Instantiate(light,new Vector3(contact.point.x,contact.point.y,-2),Quaternion.identity);
+							ParticleSystem p = (ParticleSystem)Instantiate(particle,contact.point,Quaternion.identity);
+							p.transform.eulerAngles = contact.normal;
+							p.startSpeed = 4;
+						}
+					}
 				}
 			}
 		}

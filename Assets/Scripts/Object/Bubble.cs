@@ -11,6 +11,8 @@ public class Bubble : MonoBehaviour {
 	private float growTime	= 4;
 	private float size;
 	
+	private bool isDestroyed;
+	
 	// Use this for initialization
 	void Start () {
 		size		= Random.Range(0.5f,2f);
@@ -40,13 +42,16 @@ public class Bubble : MonoBehaviour {
 		rigidbody.AddForce(Vector3.up * Physics.gravity.magnitude * (0.5f + 0.5f*(1-(size/2f)) ) * rigidbody.mass);
 	}
 	
+	public bool IsDestroyed(){
+		return isDestroyed;
+	}
+	
 	public void OnCollisionEnter( Collision collision ){
 		if( collision.relativeVelocity.magnitude > 8 ){
-			PopBubble();
-			Buff buff = GetComponent<Buff>();
-			if(buff){
-				buff.ApplyBuff(collision);
+			if(collision.gameObject.GetComponent<UserInput>()){
+				collision.gameObject.GetComponent<UserInput>().ObjectDestroyed();
 			}
+			PopBubble();
 		}else{
 			rigidbody.velocity += collision.contacts[0].normal * 1.5f;
 		}
@@ -69,6 +74,7 @@ public class Bubble : MonoBehaviour {
 				sound.Play();
 			}
 		}
+		isDestroyed = true;
 		Destroy(gameObject);
 	}
 }

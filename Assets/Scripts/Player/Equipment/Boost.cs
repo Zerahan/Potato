@@ -71,7 +71,7 @@ public class Boost : MonoBehaviour {
 	}
 	
 	public void OnCollisionEnter(Collision collision){
-		Debug.Log("Adding Energy: " + (collision.relativeVelocity.magnitude));
+		//Debug.Log("Adding Energy: " + (collision.relativeVelocity.magnitude));
 		energy = Mathf.Min(maxEnergy, energy + collision.relativeVelocity.magnitude);
 	}
 	
