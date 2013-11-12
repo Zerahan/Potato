@@ -20,6 +20,6 @@ public class WindTunnel : MonoBehaviour{
 		Gizmos.DrawCube(transform.position,transform.localScale);
 		Gizmos.color	= Color.yellow;
 		Gizmos.DrawWireCube(transform.position,transform.localScale);
-		Gizmos.DrawRay(transform.position,windDirection*windStrength);
+		Gizmos.DrawRay(transform.position,(windDirection*windStrength));
 	}
 }
