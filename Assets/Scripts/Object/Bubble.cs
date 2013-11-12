@@ -9,20 +9,27 @@ public class Bubble : MonoBehaviour {
 	
 	private float popTime;
 	private float growTime	= 4;
+	
+	
 	private float size;
+	private float maxSize;
 	
 	private bool isDestroyed;
 	
 	// Use this for initialization
 	void Start (){
-		size		= Random.Range(0.5f,2f);
-		popTime		= Time.time + popMaxTime*Mathf.Pow(1-(size/2.5f)+Random.Range(0f,0.25f),2);
+		maxSize		= Random.Range(0.5f,2f);
+		growTime	= 3*(size/2f) + 1;
+		popTime		= growTime + Time.time + popMaxTime*Mathf.Pow(1-(size/2.5f)+Random.Range(0f,0.25f),2);
 		transform.localScale	= Vector3.zero;
 		rigidbody.mass			= (size/2.5f) + 1;
 	}
 	
 	// Update is called once per frame
 	void Update(){
+		size	+= Time.deltaTime;
+		transform.localScale( new Vector3(1,1,1) * Mathf.Log(size) );
+		/*
 		if(growTime >= 0){
 			growTime -= Time.deltaTime;
 			transform.localScale = new Vector3(size,size,size) * (1-(growTime/4));
@@ -37,6 +44,7 @@ public class Bubble : MonoBehaviour {
 		if( popTime < Time.time ){
 			PopBubble();
 		}
+		//*/
 	}
 	
 	void FixedUpdate(){
@@ -48,10 +56,9 @@ public class Bubble : MonoBehaviour {
 	}
 	
 	public void OnCollisionEnter( Collision collision ){
+		growTime	= 0.5f;
 		if( collision.relativeVelocity.magnitude > 8 ){
-			if(collision.gameObject.GetComponent<UserInput>()){
-				collision.gameObject.GetComponent<UserInput>().ObjectDestroyed();
-			}
+			isDestroyed = true;
 			PopBubble();
 		}else{
 			rigidbody.velocity += collision.contacts[0].normal * 1.5f;

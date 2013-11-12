@@ -24,6 +24,8 @@ public class UserInput : MonoBehaviour {
 	private float controlMultiplier	= 0.00f;
 	private float yVelocity;
 	
+	// Engine
+	
 	public void Start () {
 		player		= transform.root.GetComponent<Player>();
 		gamemode	= transform.root.GetComponent<TimedRace>();
@@ -34,80 +36,8 @@ public class UserInput : MonoBehaviour {
 	
 	public void FixedUpdate () {
 		if(player.human && !controlsLocked){
-			MovePlayer();
+			DoMovePlayer();
 		}
-	}
-	
-	public bool AreControlsLocked(){ return controlsLocked; }
-	public void LockControls(bool shouldLock){
-		controlsLocked = shouldLock;
-	}
-	
-	public bool IsOnGround(){
-		return onGround;
-	}
-	public bool IsGrappled(){
-		return GetComponent<Grapple>().IsActive();
-	}
-	
-	public void MovePlayer(){
-		horizontal	= Input.GetAxis("Horizontal");
-		vertical	= Input.GetAxis("Vertical");
-		bool jumpbutton		= Input.GetButton("Jump");
-		bool isGrappled		= GetComponent<Grapple>().IsActive();
-		bool useGravity		= true;
-		
-		Vector3 moveTarget	= new Vector3(0,0,0);
-		
-		if(onGround){
-			moveTarget.x	= Input.GetAxis("Horizontal") * 10;
-		}else if(isGrappled){
-			moveTarget.x	= Input.GetAxis("Horizontal") * 10;
-			moveTarget.y	= Input.GetAxis("Vertical") * 10;			
-		}else{
-			moveTarget.x	= Input.GetAxis("Horizontal") * 5;
-			moveTarget.y	= Input.GetAxis("Vertical") * 5;
-		}
-		
-		if( onGround && !isJumping && (jumpbutton || Input.GetAxis("Vertical") > 0) ){
-			isJumping = true;
-			rigidbody.velocity	= rigidbody.velocity + new Vector3(0,11,0);
-		}
-		/*
-		if(Input.GetAxis("Vertical") != 0){
-			int mult = 0;
-			if(Input.GetAxis("Vertical") < 0){
-				mult = -1;
-			}else{
-				mult = 1;
-			}
-			if(isGrappled){
-				moveTarget.y	= (mult * 2) + (Physics.gravity.y * mult * -1);
-			}else if( controlMultiplier > 0 ){
-				moveTarget.y	= (mult * 2) + (Physics.gravity.y * mult * -1);
-				controlMultiplier -= Time.deltaTime/2f;
-			}else{
-				moveTarget.y	= 0;
-			}
-		}
-		//*/
-		//rigidbody.useGravity = useGravity;
-		rigidbody.AddForce(moveTarget);
-		yVelocity	= moveTarget.y;
-		
-		// If the player moves, start the timer
-		if(!gamemode.HasStarted() && (isJumping || moveTarget.x != 0 || Input.GetButton("Fire1"))){
-			gamemode.StartRace();
-		}
-	}
-	
-	public float GetControlMultiplier(){ return controlMultiplier; }
-	public void SetControlMultiplier(float mult){
-		controlMultiplier	= mult;
-	}
-	
-	public void ObjectDestroyed(){
-		onGround = false;
 	}
 	
 	// Spawns particles and light at the point of collision, and gives the player the ability to jump again.
@@ -155,4 +85,83 @@ public class UserInput : MonoBehaviour {
 	public void OnCollisionExit(){
 		onGround	= false;
 	}
+	
+	
+	// Custom
+	
+	public float GetControlMultiplier(){ return controlMultiplier; }
+	public void SetControlMultiplier(float mult){
+		controlMultiplier	= mult;
+	}
+	
+	public Vector3 GetMousePosition(){
+		Vector3 mp	= Input.mousePosition;
+		mp.z		= 0-Camera.main.transform.position.z;
+		return Camera.main.ScreenToWorldPoint(mp);
+	}
+	
+	public bool IsControlLocked(){ return controlsLocked; }
+	public void SetControlLocked(bool shouldLock){
+		controlsLocked = shouldLock;
+	}
+	
+	public bool IsGrappled(){
+		return GetComponent<Grapple>().IsActive();
+	}
+	public bool IsOnGround(){
+		return onGround;
+	}
+	
+	public void DoMovePlayer(){
+		horizontal	= Input.GetAxis("Horizontal");
+		vertical	= Input.GetAxis("Vertical");
+		bool jumpbutton		= Input.GetButton("Jump");
+		bool isGrappled		= GetComponent<Grapple>().IsActive();
+		bool useGravity		= true;
+		
+		Vector3 moveTarget	= new Vector3(0,0,0);
+		
+		if(onGround){
+			moveTarget.x	= Input.GetAxis("Horizontal") * 10;
+		}else if(isGrappled){
+			moveTarget.x	= Input.GetAxis("Horizontal") * 5;
+			moveTarget.y	= Input.GetAxis("Vertical") * 5;			
+		}else{
+			moveTarget.x	= Input.GetAxis("Horizontal") * 2;
+			moveTarget.y	= Input.GetAxis("Vertical") * 2;
+		}
+		
+		if( onGround && !isJumping && (jumpbutton || Input.GetAxis("Vertical") > 0) ){
+			isJumping = true;
+			rigidbody.velocity	= rigidbody.velocity + new Vector3(0,11,0);
+		}
+		/*
+		if(Input.GetAxis("Vertical") != 0){
+			int mult = 0;
+			if(Input.GetAxis("Vertical") < 0){
+				mult = -1;
+			}else{
+				mult = 1;
+			}
+			if(isGrappled){
+				moveTarget.y	= (mult * 2) + (Physics.gravity.y * mult * -1);
+			}else if( controlMultiplier > 0 ){
+				moveTarget.y	= (mult * 2) + (Physics.gravity.y * mult * -1);
+				controlMultiplier -= Time.deltaTime/2f;
+			}else{
+				moveTarget.y	= 0;
+			}
+		}
+		//*/
+		//rigidbody.useGravity = useGravity;
+		rigidbody.AddForce(moveTarget);
+		yVelocity	= moveTarget.y;
+		
+		// If the player moves, start the timer
+		if(!gamemode.HasStarted() && (isJumping || moveTarget.x != 0 || Input.GetButton("Fire1"))){
+			gamemode.StartRace();
+		}
+	}
+	
+
 }
