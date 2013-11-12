@@ -27,7 +27,7 @@ public class Boost : MonoBehaviour {
 	}
 	
 	void Update(){
-		if(energy > 0){
+		if(energy >= jumpStrength){
 			GetComponent<Light>().intensity = (3 * (energy/maxEnergy))+1f;
 		}else{
 			GetComponent<Light>().intensity = 0f;
@@ -72,7 +72,7 @@ public class Boost : MonoBehaviour {
 	
 	public void OnCollisionEnter(Collision collision){
 		//Debug.Log("Adding Energy: " + (collision.relativeVelocity.magnitude));
-		energy = Mathf.Min(maxEnergy, energy + collision.relativeVelocity.magnitude);
+		energy = Mathf.Min(maxEnergy, energy + Mathf.Min(jumpStrength,collision.relativeVelocity.magnitude));
 	}
 	
 	public void OnCollisionStay(Collision collision){

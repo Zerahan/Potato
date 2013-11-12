@@ -107,14 +107,13 @@ public class UserInput : MonoBehaviour {
 	}
 	
 	public void ObjectDestroyed(){
-		Debug.Log("Object Destroyed!");
 		onGround = false;
 	}
 	
 	// Spawns particles and light at the point of collision, and gives the player the ability to jump again.
 	public void OnCollisionEnter(Collision collision){
 		if(collision.gameObject){
-			onGround	= true;
+			onGround		= true;
 			if((collision.gameObject.GetComponent<Bubble>() && collision.gameObject.GetComponent<Bubble>().IsDestroyed())||(collision.gameObject.GetComponent<BreakableObject>() && collision.gameObject.GetComponent<BreakableObject>().IsDestroyed())){
 				onGround	= false;
 			}
@@ -142,13 +141,11 @@ public class UserInput : MonoBehaviour {
 		if( isAttachedToWall ){
 			if( isJumping ){
 				isAttachedToWall		= false;
-				rigidbody.useGravity	= true;
 			}else{
 				foreach(ContactPoint contact in collision.contacts){
 					float angle	=  Mathf.Tan(contact.normal.y/contact.normal.x);
 					if( angle > Mathf.PI/6 || angle < 0-Mathf.PI/6 ){
 						isAttachedToWall		= false;
-						rigidbody.useGravity	= true;
 					}
 				}
 			}
