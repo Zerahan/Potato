@@ -10,8 +10,8 @@ public class Player : MonoBehaviour {
 	 * human				// Is the player a human or a computer?
 	 * 
 	 * // Functions
-	 * AreControlsLocked()	// Check if the player's controls are locked
-	 * LockControls(bool)	// Locks/unlocks controls
+	 * IsControlLocked()	// Check if the player's controls are locked
+	 * SetControlLocked(bool)	// Locks/unlocks controls
 	 * 
 	 * To Do:
 	 *	The camera should be handled by a seperate script.

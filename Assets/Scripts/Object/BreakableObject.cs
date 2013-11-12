@@ -15,9 +15,7 @@ public class BreakableObject : MonoBehaviour {
 	public void OnCollisionEnter( Collision collision ){
 		if( collision.relativeVelocity.magnitude > breakSpeed ){
 			ParticleSystem p = (ParticleSystem)Instantiate(particle,transform.position,Quaternion.identity);
-			if(collision.gameObject.GetComponent<UserInput>()){
-				collision.gameObject.GetComponent<UserInput>().ObjectDestroyed();
-			}
+			isDestroyed = true;
 			Destroy(gameObject);
 		}
 	}

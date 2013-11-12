@@ -43,7 +43,7 @@ public class TimedRace : MonoBehaviour {
 	public void Restart(){
 		endTime		= 0;
 		endTimer	= 0;
-		player.GetComponent<UserInput>().LockControls(false);
+		player.GetComponent<UserInput>().SetControlLocked(false);
 		player.transform.position = new Vector3(0,0,0);
 		player.rigidbody.velocity = new Vector3(0,0,0);
 		//player.renderer.enabled = true;
@@ -59,10 +59,10 @@ public class TimedRace : MonoBehaviour {
 		float time	= Time.time;
 		endTimer	= time + 2;
 		endTime = (time - startTime);
-		player.GetComponent<UserInput>().LockControls(true);
+		player.GetComponent<UserInput>().SetControlLocked(true);
 		//player.renderer.enabled = false;
 		Grapple hook = transform.root.GetComponent<Grapple>();
-		hook.Disable();
+		hook.DoAction(Grapple.Action.UnGrapple);
 		if(hasWon){
 			player.rigidbody.velocity = new Vector3(player.rigidbody.velocity.x*0.25f,player.rigidbody.velocity.y,player.rigidbody.velocity.z*0.25f);
 			if( endTime <= recordTime){

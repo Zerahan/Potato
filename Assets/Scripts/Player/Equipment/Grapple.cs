@@ -4,23 +4,30 @@ using System.Collections;
 public class Grapple : MonoBehaviour {
 	private Player player;
 	public Material material;
+	private UserInput userInput;
 	
-	private string useButton	= "Fire1";
-	private bool canActivate	= true;
-	private bool isActive;
-	private float lastUse;
-	private float useDelay		= 0.01f;
-	private LineRenderer lineRenderer;
+	private string		useButton		= "Fire1";
+	private bool		canActivate		= true;
+	private bool		isActive		;
+	private float		lastUse			;
+	private float		useDelay		= 0.01f;
+	private LineRenderer lineRenderer	;
 	
-	private Transform hitObject;
-	private Vector3 hitPoint;
-	private float minDistance	= 2.00f;
-	private float maxDistance	= 10.00f;
-	private Vector3 offset		= new Vector3(0,0.5f,0);
-	private float hookPullSpeed	= 4;
+	private Transform	hitObject		;
+	private Vector3		hitPoint		;
+	private float		minDistance		= 2.00f;
+	private float		maxDistance		= 10.00f;
+	private Vector3		offset			= new Vector3(0,0.5f,0);
+	private float		hookPullSpeed	= 4;
+	
+	public enum Action{
+		Grapple,
+		UnGrapple
+	}
 	
 	void Start () {
 		player					= transform.root.GetComponent<Player>();
+		userInput				= GetComponent<UserInput>();
 		lineRenderer			= gameObject.AddComponent<LineRenderer>();
 		lineRenderer.material	= material;
 		lineRenderer.SetColors(Color.yellow,Color.yellow);
@@ -31,8 +38,12 @@ public class Grapple : MonoBehaviour {
 	}
 	
 	void Update () {
-		if( !player.GetComponent<UserInput>().AreControlsLocked() && Input.GetButtonDown(useButton) && lastUse < Time.time ){
-			Action();
+		if( !player.GetComponent<UserInput>().IsControlLocked() && lastUse < Time.time ){
+			if( Input.GetButtonDown(useButton) ){
+				DoAction(Action.Grapple);
+			}else if(Input.GetButtonUp(useButton)){
+				DoAction(Action.UnGrapple);
+			}
 		}
 		if( isActive ){
 			if(hitObject){
@@ -40,7 +51,7 @@ public class Grapple : MonoBehaviour {
 				lineRenderer.SetPosition(1,hitObject.position + hitPoint);
 				PullToHook();
 			}else{
-				Disable();
+				DoAction(Action.UnGrapple);
 			}
 		}
 	}
@@ -49,12 +60,35 @@ public class Grapple : MonoBehaviour {
 		return isActive;
 	}
 	
-	private bool Action(){
+	public bool DoAction( Action action ) {
+		switch (action) {
+			case Action.Grapple:
+				//Debug.LogError("Only the grappling hook can grapple!");
+				DoGrapple();
+				return false;
+				break;
+			
+			case Action.UnGrapple:
+				DoUnGrapple();
+				return true;
+				break;
+			
+			default:
+				Debug.LogError("Invalid action " + action);
+				return false;
+				break;				
+		}
+		return false;
+	}
+	
+	
+	
+	private bool DoGrapple(){
 		canActivate = true;
-		if( !isActive ){
+		//if( !isActive ){
 			lastUse = Time.time + useDelay;
 			RaycastHit hit;
-			if( Physics.Raycast(transform.position + offset, GetMousePosition()-(transform.position + offset), out hit) ){
+			if( Physics.Raycast(transform.position + offset, userInput.GetMousePosition()-(transform.position + offset), out hit) ){
 				if( (hit.point-transform.position).magnitude <= maxDistance ){
 					isActive	= true;
 					hitObject	= hit.transform;
@@ -64,8 +98,8 @@ public class Grapple : MonoBehaviour {
 					return true;
 				}
 			}
-		}
-		Disable();
+		//}
+		//DoAction(Action.UnGrapple);
 		return false;
 	}
 	
@@ -80,7 +114,7 @@ public class Grapple : MonoBehaviour {
 		}
 	}
 	
-	public void Disable(){
+	public void DoUnGrapple(){
 		lastUse		= Time.time + useDelay;
 		canActivate	= true;
 		isActive	= false;
@@ -89,20 +123,19 @@ public class Grapple : MonoBehaviour {
 		
 		renderer.enabled = false;
 	}
-
-	private Vector3 GetMousePosition(){
-		Vector3 mp	= Input.mousePosition;
-		mp.z		= 0-Camera.main.transform.position.z;
-		return Camera.main.ScreenToWorldPoint(mp);
-	}
 	
 	public void OnDrawGizmos(){
 		if(hitPoint != Vector3.zero){
 			Gizmos.color = Color.red;
 			Gizmos.DrawWireSphere(hitObject.position + hitPoint,1f);
 		}
-		Gizmos.DrawWireSphere(GetMousePosition(),1f);
 		
-		Gizmos.DrawLine( transform.position, GetMousePosition() );
+		if (!userInput) {
+			userInput = GetComponent<UserInput>();
+		}
+		
+		Gizmos.DrawWireSphere(userInput.GetMousePosition(),1f);
+		
+		Gizmos.DrawLine( transform.position, userInput.GetMousePosition() );
 	}
 }

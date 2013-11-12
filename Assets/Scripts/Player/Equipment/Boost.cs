@@ -3,17 +3,19 @@ using System.Collections;
 //tempchange <- remove this line
 
 public class Boost : MonoBehaviour {
-	public string BUTTON	= "Jump";
+	private string	BUTTON			= "Fire2";
+	public float 	jumpStrength	= 0.5f;
+	public float 	moveStrength	= 1f;
+	public int 		maxJumps		= 10;
 	
 	private UserInput userInput;
+	private bool 	isDebug 		= false;
 	
-	private bool buttonState;
-	private bool lastButtonState;
-	private float energy		= 0f;
-	private float maxEnergy		= 200f;
-	private float jumpStrength	= Physics.gravity.magnitude * 1.25f;
-	private float moveStrength	= Physics.gravity.magnitude * 1; //2f;
-	private Vector3 moveDirection;
+	private bool 	buttonState		;
+	private bool 	lastButtonState	;
+	private float 	energy			= 0f;
+	private float 	maxEnergy		= 0f;
+	private Vector3 moveDirection	;
 	
 	private bool useGravity;
 	
@@ -21,9 +23,15 @@ public class Boost : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start(){
-		userInput = GetComponent<UserInput>();
-		maxEnergy = jumpStrength * 10;
-		//rigidbody.useGravity = false;
+		userInput	= GetComponent<UserInput>();
+		jumpStrength = jumpStrength * Physics.gravity.magnitude;
+		moveStrength = moveStrength * Physics.gravity.magnitude;
+		maxEnergy	= jumpStrength * maxJumps;
+		if (isDebug) {
+			energy = 500f;
+			rigidbody.useGravity = false;
+			
+		}
 	}
 	
 	void Update(){
@@ -34,21 +42,25 @@ public class Boost : MonoBehaviour {
 		}
 	}
 	
+	
 	// Update is called once per frame
 	void FixedUpdate () {
-		moveDirection.x = Input.GetAxis("Horizontal");
-		moveDirection.y = Input.GetAxis("Vertical");
+		moveDirection	= (userInput.GetMousePosition() - transform.position).normalized;
+		//moveDirection.x = Input.GetAxis("Horizontal");
+		//moveDirection.y = Input.GetAxis("Vertical");
 		useGravity		= true;
 		//lastButtonState	= buttonState;
 		//buttonState		= Input.GetButton(button);//moveDirection.magnitude > 0;
 		
-		if(!userInput.IsOnGround() && !userInput.IsGrappled() && energy > 0 && moveDirection.magnitude > 0){
+		if(energy > 0 && moveDirection.magnitude > 0){
 			
 			// first frame of button press - instant boost
 			//if( !lastButtonState && buttonState && energy >= jumpStrength ){
 			if( Input.GetButtonDown(BUTTON) && energy >= jumpStrength ){
 				rigidbody.velocity += moveDirection.normalized * jumpStrength;
-				energy -= jumpStrength;
+				if (!isDebug) {
+					energy -= jumpStrength;
+				}
 			}
 			
 			/*
@@ -72,7 +84,9 @@ public class Boost : MonoBehaviour {
 	
 	public void OnCollisionEnter(Collision collision){
 		//Debug.Log("Adding Energy: " + (collision.relativeVelocity.magnitude));
-		energy = Mathf.Min(maxEnergy, energy + Mathf.Min(jumpStrength,collision.relativeVelocity.magnitude));
+		if (!isDebug) {
+			energy = Mathf.Min(maxEnergy, energy + Mathf.Min(jumpStrength,collision.relativeVelocity.magnitude));
+		}
 	}
 	
 	public void OnCollisionStay(Collision collision){
