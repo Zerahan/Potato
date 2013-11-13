@@ -128,8 +128,8 @@ public class UserInput : MonoBehaviour {
 			moveTarget.x	= Input.GetAxis("Horizontal") * 5;
 			moveTarget.y	= Input.GetAxis("Vertical") * 5;			
 		}else{
-			moveTarget.x	= Input.GetAxis("Horizontal") * 2;
-			moveTarget.y	= Input.GetAxis("Vertical") * 2;
+			moveTarget.x	= Input.GetAxis("Horizontal") * 5;
+			moveTarget.y	= Input.GetAxis("Vertical") * 5;
 		}
 		
 		if( onGround && !isJumping && (jumpbutton || Input.GetAxis("Vertical") > 0) ){
