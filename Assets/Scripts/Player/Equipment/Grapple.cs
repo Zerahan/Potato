@@ -6,7 +6,7 @@ public class Grapple : MonoBehaviour {
 	public Material material;
 	private UserInput userInput;
 	
-	private string		useButton		= "Fire1";
+	private string		useButton		= "Grapple";
 	private bool		canActivate		= true;
 	private bool		isActive		;
 	private float		lastUse			;

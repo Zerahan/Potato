@@ -3,7 +3,7 @@ using System.Collections;
 //tempchange <- remove this line
 
 public class Boost : MonoBehaviour {
-	private string	BUTTON			= "Fire2";
+	private string	BUTTON			= "Boost";
 	public float 	jumpStrength	= 0.5f;
 	public float 	moveStrength	= 1f;
 	public int 		maxJumps		= 10;
