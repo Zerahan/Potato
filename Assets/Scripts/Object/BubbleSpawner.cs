@@ -39,7 +39,7 @@ public class BubbleSpawner : MonoBehaviour {
 					lifespan = minAge + ageRange * lifespan;
 					
 					bubbles[index] = (GameObject)Instantiate(bubble,new Vector3(transform.position.x,transform.position.y,transform.position.z),Quaternion.identity);
-					bubbles[index].GetComponent<Bubble>().maxAge = lifespan;
+					//bubbles[index].GetComponent<Bubble>().maxAge = lifespan;
 					bubbles[index].transform.localEulerAngles = new Vector3(0.0f,0.0f,Random.Range(0.0f,360.0f));
 				}
 				index++;
