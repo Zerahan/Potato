@@ -25,7 +25,7 @@ public class HUD : MonoBehaviour {
 	}
 	
 	void OnGUI(){
-		if(player.human){
+		if(player.isHuman){
 			// Everything in the group will remain in the same arrangement, even if the group's position is moved
 			// Example:
 			//     GUI.Box(new Rect(64,0,64,64),""); this sets the x position to the group's position, +64

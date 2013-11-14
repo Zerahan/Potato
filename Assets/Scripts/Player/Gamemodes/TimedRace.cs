@@ -61,8 +61,8 @@ public class TimedRace : MonoBehaviour {
 		endTime = (time - startTime);
 		player.GetComponent<UserInput>().SetControlLocked(true);
 		//player.renderer.enabled = false;
-		Grapple hook = transform.root.GetComponent<Grapple>();
-		hook.DoAction(Grapple.Action.UnGrapple);
+		Grapple hook = transform.root.GetComponentInChildren<Grapple>();
+		hook.DoAction(Grapple.Action.Disable);
 		if(hasWon){
 			player.rigidbody.velocity = new Vector3(player.rigidbody.velocity.x*0.25f,player.rigidbody.velocity.y,player.rigidbody.velocity.z*0.25f);
 			if( endTime <= recordTime){

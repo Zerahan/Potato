@@ -19,19 +19,19 @@ public class Boost : MonoBehaviour {
 	private float 	maxEnergy		= 0f;
 	private Vector3 moveDirection	;
 	
-	private bool useGravity;
+	//private bool useGravity;
 	
 	private bool automatic;
 	
 	// Use this for initialization
 	void Start(){
-		userInput	= GetComponent<UserInput>();
+		userInput	= transform.root.GetComponent<UserInput>();
 		boostStrength = boostStrength * Physics.gravity.magnitude;
 		moveStrength = moveStrength * Physics.gravity.magnitude;
 		maxEnergy	= boostStrength * maxBoosts;
 		if (isDebug) {
 			energy = 500f;
-			rigidbody.useGravity = false;
+			//rigidbody.useGravity = false;
 		}else{
 			energy = boostStrength * startBoosts;
 		}
@@ -39,9 +39,9 @@ public class Boost : MonoBehaviour {
 	
 	void Update(){
 		if(energy >= boostStrength){
-			GetComponent<Light>().intensity = (3 * (energy/maxEnergy))+1f;
+			transform.root.GetComponentInChildren<Light>().intensity = (1 * (energy/maxEnergy))+1f;
 		}else{
-			GetComponent<Light>().intensity = 0f;
+			transform.root.GetComponentInChildren<Light>().intensity = 0f;
 		}
 	}
 	
@@ -51,7 +51,7 @@ public class Boost : MonoBehaviour {
 		moveDirection	= (userInput.GetMousePosition() - transform.position).normalized;
 		//moveDirection.x = Input.GetAxis("Horizontal");
 		//moveDirection.y = Input.GetAxis("Vertical");
-		useGravity		= true;
+		//useGravity		= true;
 		//lastButtonState	= buttonState;
 		//buttonState		= Input.GetButton(button);//moveDirection.magnitude > 0;
 		
@@ -60,7 +60,7 @@ public class Boost : MonoBehaviour {
 			// first frame of button press - instant boost
 			//if( !lastButtonState && buttonState && energy >= boostStrength ){
 			if( Input.GetButtonDown(BUTTON) && energy >= boostStrength ){
-				rigidbody.velocity += moveDirection.normalized * boostStrength;
+				transform.root.rigidbody.velocity += moveDirection.normalized * boostStrength;
 				if (!isDebug) {
 					energy -= boostStrength;
 				}

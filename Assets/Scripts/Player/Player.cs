@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using GameSettings;
 
 public class Player : MonoBehaviour {
 	/* Handles most of the "player" stuff
@@ -7,7 +9,7 @@ public class Player : MonoBehaviour {
 	 * Should work just by placing it onto an object that also has a Player script attached.
 	 * 
 	 * // Variables
-	 * human				// Is the player a human or a computer?
+	 * isHuman				// Is the player a isHuman or a computer?
 	 * 
 	 * // Functions
 	 * IsControlLocked()	// Check if the player's controls are locked
@@ -24,41 +26,118 @@ public class Player : MonoBehaviour {
 	 *	Make player into a prefab that does not collide with other players (potential multiplayer)
 	//*/
 	
-	public bool human;						// No point in displaying graphical stuff to a computer
-	public GameObject body;					// Set in inspector to the player's visible body, allows for the body to be made invisible
+	public bool isHuman;					// No point in displaying graphical stuff to a computer
+	public GameObject body;					// Set in inspector to the player's visible body
+	
+	private UserInput userInput;
 	
 	private float timer;
 	private int dropAmount		= -5;		// If the player gets outside the map, this is how far down they can drop before resetting
-	private int maxCamDist		= 5;		// For camera position calculations
-	private int startCamY		= 10;
 	
+	//private float debugFloat;
+	
+	private Vector3 localEulerAngles;
+	private	float	cameraZoom;
+	private	Vector3	cameraPosition		= Vector3.zero;
+	private	Vector3 cameraPositionMin	= new Vector3(0,2,-5);
+	private	Vector3 cameraPositionMax	= new Vector3(0,3,-20);
+	
+	public	List<Equipment> equipment	= new List<Equipment>();
+	
+	public AnimationClip idleAnimation;
+	public AnimationClip walkAnimation;
+	public AnimationClip runAnimation;
+	public AnimationClip jumpPoseAnimation;
+	
+	public float walkMaxAnimationSpeed	= 0.75f;
+	public float trotMaxAnimationSpeed	= 1.0f;
+	public float runMaxAnimationSpeed	= 1.0f;
+	public float jumpAnimationSpeed		= 1.15f;
+	public float landAnimationSpeed		= 1.0f;
+	
+	private Animation _animation;
+		
 	public void Start(){
-		startCamY = (int)Camera.main.transform.position.y;
+		userInput		= GetComponent<UserInput>();
+		cameraZoom		= 0.25f;
+		Camera.main.transform.localPosition	= (cameraPositionMin * (1-cameraZoom)) + (cameraPositionMax * (cameraZoom));
+	}
+
+	void Awake ()
+	{
+		//moveDirection = transform.TransformDirection(Vector3.forward);
+		
+		_animation = body.GetComponent<Animation>();
+				
 	}
 	
 	public void Update () {
-		// Makes the main camera follow the player around the map
-		// The player will be at the bottom of the camera's field of view when they
-		//   are at the bottom of the map, and at the top when they are at the top
-		if(Camera.main){
-			float y = (maxCamDist * ((transform.position.y/80)*2 - 1));
-			if(y < -maxCamDist){
-				y = -maxCamDist;
+		float vel	= 0f;
+		if(rigidbody.velocity.x > 0.1 || rigidbody.velocity.x < -0.1){
+			vel	= rigidbody.velocity.x;
+			if(vel > 2){
+				vel = 2;
 			}
-			if(y > maxCamDist){
-				y = maxCamDist;
+			if(vel < -2){
+				vel = -2;
 			}
-			y = transform.position.y - y;
-			if(y < startCamY){
-				y = startCamY;
+		}
+		localEulerAngles.y	= ((vel/2f)*-90)+180;
+		body.transform.localEulerAngles = localEulerAngles;
+		
+		if( !userInput.IsControlLocked() ){
+			if( cameraPosition	!= Vector3.zero ){
+				cameraPosition	= Vector3.zero;
+				Camera.main.transform.localPosition	= (cameraPositionMin * (1-cameraZoom)) + (cameraPositionMax * (cameraZoom));
 			}
-			Camera.main.transform.position = new Vector3(transform.position.x,y,Camera.main.transform.position.z);
+			if( Input.GetAxis("Mouse ScrollWheel") != 0 ){
+				cameraZoom	-= 0.5f * (Input.GetAxis("Mouse ScrollWheel"));
+				if( cameraZoom < 0 ){
+					cameraZoom	= 0;
+				}else if( cameraZoom > 1 ){
+					cameraZoom	= 1;
+				}
+				Camera.main.transform.localPosition	= (cameraPositionMin * (1-cameraZoom)) + (cameraPositionMax * (cameraZoom));
+			}
+		}else{
+			if( cameraPosition == Vector3.zero ){
+				cameraPosition	= Camera.main.transform.position;
+			}
+			Camera.main.transform.position	= cameraPosition;
 		}
 		
 		// Reset if the player dropped too low.
 		if(transform.position.y < dropAmount){
 			transform.position = new Vector3(0,0,0);
 			rigidbody.velocity = new Vector3(0,0,0);
+		}
+		
+		if(_animation) {
+			if(rigidbody.velocity.magnitude < 0.1){
+				rigidbody.velocity	= Vector3.zero;
+				_animation.CrossFade(idleAnimation.name);
+			}else{
+				if( !userInput.IsOnGround() ){
+					//debugFloat	= rigidbody.velocity.y;
+					if(rigidbody.velocity.y > 0) {
+						_animation[jumpPoseAnimation.name].speed = jumpAnimationSpeed;
+						_animation[jumpPoseAnimation.name].wrapMode = WrapMode.ClampForever;
+						_animation.CrossFade(jumpPoseAnimation.name);
+					} else {
+						_animation[jumpPoseAnimation.name].speed = -landAnimationSpeed;
+						_animation[jumpPoseAnimation.name].wrapMode = WrapMode.ClampForever;
+						_animation.CrossFade(jumpPoseAnimation.name);				
+					}
+				}else{
+					if(rigidbody.velocity.magnitude > 4){
+						_animation[runAnimation.name].speed		= Mathf.Clamp(rigidbody.velocity.magnitude, 0.0f, runMaxAnimationSpeed);
+						_animation.CrossFade(runAnimation.name);
+					}else{
+						_animation[walkAnimation.name].speed	= Mathf.Clamp(rigidbody.velocity.magnitude, 0.0f, walkMaxAnimationSpeed);
+						_animation.CrossFade(walkAnimation.name);
+					}
+				}
+			}
 		}
 	}
 }

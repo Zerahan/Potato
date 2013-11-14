@@ -46,6 +46,13 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Object\Inspector\PlatformInspector.js" />
      <Compile Include="Assets\Scripts\Object\Platform_v2.js" />
+ <Reference Include="Assembly-UnityScript-firstpass">
+ <HintPath>Library\ScriptAssemblies\Assembly-UnityScript-firstpass.dll</HintPath>
+ </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass-vs.csproj">
+      <Project>{D2EF679B-860F-7D27-3CC2-8890633EF68C}</Project>      <Name>Assembly-CSharp-firstpass-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

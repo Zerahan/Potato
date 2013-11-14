@@ -19,17 +19,17 @@ public class Platform : MonoBehaviour {
 	public int speed = 8;				// how fast it moves, currently not based on seconds
 	public GameObject mover;			// MUST be set in inspector to make the platform mobile
 	
-	private bool isTouching = false;
+	//private bool isTouching = false;
 	private bool isAscending;
 	
 	public void Start(){
 	}
 	
 	public void OnCollisionEnter(){
-		isTouching = true;
+		//isTouching = true;
 	}
 	public void OnCollisionExit(){
-		isTouching = false;
+		//isTouching = false;
 	}
 	
 	public void Update(){
