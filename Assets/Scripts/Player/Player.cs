@@ -59,7 +59,7 @@ public class Player : MonoBehaviour {
 		
 	public void Start(){
 		userInput		= GetComponent<UserInput>();
-		cameraZoom		= 0.25f;
+		cameraZoom		= 1f;
 		Camera.main.transform.localPosition	= (cameraPositionMin * (1-cameraZoom)) + (cameraPositionMax * (cameraZoom));
 	}
 

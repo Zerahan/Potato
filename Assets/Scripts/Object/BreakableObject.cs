@@ -23,6 +23,7 @@ public class BreakableObject : MonoBehaviour {
 			if(sound){
 				sound.clip		= breakSounds[Random.Range(0,breakSounds.Length-1)];
 				sound.Play();
+				sound.volume = 1f;
 			}
 		}
 		Destroy(gameObject);
