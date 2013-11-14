@@ -93,10 +93,12 @@ public class Grapple : Equipment {
 			}
 		}else{
 			if( didRaycastHit && raycast.transform ){
-				lineRenderer.renderer.enabled = true;
 				IsActive	= true;
 				hitObject	= raycast.transform;
 				hitPoint	= raycast.point - hitObject.position;
+				lineRenderer.SetPosition(0,transform.position);
+				lineRenderer.SetPosition(1,hitObject.position + hitPoint);
+				lineRenderer.renderer.enabled = true;
 			}
 		}
 	}
