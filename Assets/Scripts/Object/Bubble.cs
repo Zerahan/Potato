@@ -63,6 +63,7 @@ public class Bubble : MonoBehaviour {
 			AudioSource sound	= p.GetComponent<AudioSource>();
 			if(sound){
 				sound.clip		= sounds[Random.Range(0,sounds.Length-1)];
+				sound.volume = 1f;
 				sound.Play();
 			}
 		}
