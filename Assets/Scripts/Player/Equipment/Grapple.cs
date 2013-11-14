@@ -89,7 +89,7 @@ public class Grapple : MonoBehaviour {
 	private Vector3		hitPoint		;
 	private float		minDistance		= 2.00f;
 	private float		maxDistance		= 10.00f;
-	private Vector3		offset			= new Vector3(0,0.5f,0);
+	private Vector3		offset			= new Vector3(0,1.5f,0);
 	private float		hookPullSpeed	= 4;
 	
 	public enum Action{

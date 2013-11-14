@@ -16,7 +16,7 @@ public class Platform : MonoBehaviour {
 	
 	public float moveDistance = 0.0f;	// how far from the origin should it move along the x axis
 	public float startPercent = 0.0f;	// what percentage of the way is it along the path
-	public int speed = 8;				// how fast it moves, currently not based on seconds
+	public float speed = 8f;			// how fast it moves, currently not based on seconds
 	public GameObject mover;			// MUST be set in inspector to make the platform mobile
 	
 	//private bool isTouching = false;

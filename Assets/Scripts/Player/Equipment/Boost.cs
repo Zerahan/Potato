@@ -3,12 +3,10 @@ using System.Collections;
 //tempchange <- remove this line
 
 public class Boost : MonoBehaviour {
-	private string	BUTTON				= "Boost";
-	public float 	boostStrength		= 0.5f;
-	public int 		startBoosts			= 1;
-	public int 		maxBoosts			= 10;
-	public float	boostRestoreDelay	= 10;
-	public float 	moveStrength		= 1f;
+	private string	BUTTON			= "Boost";
+	public float 	jumpStrength	= 0.5f;
+	public float 	moveStrength	= 1f;
+	public int 		maxJumps		= 10;
 	
 	private UserInput userInput;
 	private bool 	isDebug 		= false;
@@ -19,29 +17,28 @@ public class Boost : MonoBehaviour {
 	private float 	maxEnergy		= 0f;
 	private Vector3 moveDirection	;
 	
-	//private bool useGravity;
+	private bool useGravity;
 	
 	private bool automatic;
 	
 	// Use this for initialization
 	void Start(){
-		userInput	= transform.root.GetComponent<UserInput>();
-		boostStrength = boostStrength * Physics.gravity.magnitude;
+		userInput	= GetComponent<UserInput>();
+		jumpStrength = jumpStrength * Physics.gravity.magnitude;
 		moveStrength = moveStrength * Physics.gravity.magnitude;
-		maxEnergy	= boostStrength * maxBoosts;
+		maxEnergy	= jumpStrength * maxJumps;
 		if (isDebug) {
 			energy = 500f;
-			//rigidbody.useGravity = false;
-		}else{
-			energy = boostStrength * startBoosts;
+			rigidbody.useGravity = false;
+			
 		}
 	}
 	
 	void Update(){
-		if(energy >= boostStrength){
-			transform.root.GetComponentInChildren<Light>().intensity = (1 * (energy/maxEnergy))+1f;
+		if(energy >= jumpStrength){
+			GetComponent<Light>().intensity = (3 * (energy/maxEnergy))+1f;
 		}else{
-			transform.root.GetComponentInChildren<Light>().intensity = 0f;
+			GetComponent<Light>().intensity = 0f;
 		}
 	}
 	
@@ -51,18 +48,18 @@ public class Boost : MonoBehaviour {
 		moveDirection	= (userInput.GetMousePosition() - transform.position).normalized;
 		//moveDirection.x = Input.GetAxis("Horizontal");
 		//moveDirection.y = Input.GetAxis("Vertical");
-		//useGravity		= true;
+		useGravity		= true;
 		//lastButtonState	= buttonState;
 		//buttonState		= Input.GetButton(button);//moveDirection.magnitude > 0;
 		
 		if(energy > 0 && moveDirection.magnitude > 0){
 			
 			// first frame of button press - instant boost
-			//if( !lastButtonState && buttonState && energy >= boostStrength ){
-			if( Input.GetButtonDown(BUTTON) && energy >= boostStrength ){
-				transform.root.rigidbody.velocity += moveDirection.normalized * boostStrength;
+			//if( !lastButtonState && buttonState && energy >= jumpStrength ){
+			if( Input.GetButtonDown(BUTTON) && energy >= jumpStrength ){
+				rigidbody.velocity += moveDirection.normalized * jumpStrength;
 				if (!isDebug) {
-					energy -= boostStrength;
+					energy -= jumpStrength;
 				}
 			}
 			
@@ -81,11 +78,6 @@ public class Boost : MonoBehaviour {
 			}
 			*/
 		}
-		if (energy < maxEnergy) {
-			energy = Mathf.Min(maxEnergy, energy + (Time.deltaTime * boostStrength) / boostRestoreDelay );
-		}
-		
-		
 		
 		//rigidbody.useGravity = useGravity;
 	}
@@ -93,7 +85,7 @@ public class Boost : MonoBehaviour {
 	public void OnCollisionEnter(Collision collision){
 		//Debug.Log("Adding Energy: " + (collision.relativeVelocity.magnitude));
 		if (!isDebug) {
-			energy = Mathf.Min(maxEnergy, energy + Mathf.Min(boostStrength,collision.relativeVelocity.magnitude));
+			energy = Mathf.Min(maxEnergy, energy + Mathf.Min(jumpStrength,collision.relativeVelocity.magnitude));
 		}
 	}
 	
