@@ -7,22 +7,23 @@ public class UserInput : MonoBehaviour {
 	 * To Do:
 	 *  Make the light and particles more generic, and autoloaded from the player's options instead of having to set through inspector.
 	//*/
-	public Light light;				// The light object that is spawned when THIS player collides with something
-	public ParticleSystem particle;	// The particles that are spawned when THIS player collides with something
 	
-	private Player player;
-	private TimedRace gamemode;
-	private bool isJumping			= false;
-	private bool onGround			= true;
-	private bool isAttachedToWall	= false;
-	private float moveSpeed			= 3.0f;
-	private float lastLight;
-	private bool controlsLocked		= false;
-	private float horizontal;
-	private float vertical;
+	public		ParticleSystem particle			;	// The particles that are spawned when THIS player collides with something
 	
-	private float controlMultiplier	= 0.00f;
-	private float yVelocity;
+	private		Player		player				;
+	private		TimedRace	gamemode			;
+	private		bool		isJumping			= false;
+	private		bool		onGround			= true;
+	private		bool		isAttachedToWall	= false;
+	private		float		moveSpeed			= 10f;
+	private		float		lastParticleSpawn	;
+	private		bool		controlsLocked		= false;
+	private		float		horizontal			;
+	private		float		vertical			;
+	
+	private		float		maxVelocity			= 50f;
+	private		float		controlMultiplier	= 0.0f;
+	//private		float		yVelocity			;
 	
 	// Engine
 	
@@ -35,7 +36,7 @@ public class UserInput : MonoBehaviour {
 	}
 	
 	public void FixedUpdate () {
-		if(player.human && !controlsLocked){
+		if(player.isHuman && !controlsLocked){
 			DoMovePlayer();
 		}
 	}
@@ -44,18 +45,17 @@ public class UserInput : MonoBehaviour {
 	public void OnCollisionEnter(Collision collision){
 		if(collision.gameObject){
 			onGround		= true;
-			if((collision.gameObject.GetComponent<Bubble>() && collision.gameObject.GetComponent<Bubble>().IsDestroyed())||(collision.gameObject.GetComponent<BreakableObject>() && collision.gameObject.GetComponent<BreakableObject>().IsDestroyed())){
+			if( collision.gameObject.GetComponent<BreakableObject>() && collision.gameObject.GetComponent<BreakableObject>().IsDestroyed() ){
 				onGround	= false;
 			}
 			if(onGround){
 				foreach(ContactPoint contact in collision.contacts){
-					float angle	=  Mathf.Tan(contact.normal.y/contact.normal.x);
+					//float angle	=  Mathf.Tan(contact.normal.y/contact.normal.x);
 					if( contact.normal.y > 0f || contact.normal.x > 0.5f || contact.normal.x < -0.5f ){
 						isJumping = false;
 						Debug.DrawRay(contact.point, contact.normal * 5, Color.red,1,true);
-						if(light && particle && lastLight < Time.time){
-							lastLight = Time.time + 0.25f;
-							Instantiate(light,new Vector3(contact.point.x,contact.point.y,-2),Quaternion.identity);
+						if( particle && lastParticleSpawn < Time.time ){
+							lastParticleSpawn = Time.time + 0.25f;
 							ParticleSystem p = (ParticleSystem)Instantiate(particle,contact.point,Quaternion.identity);
 							p.transform.eulerAngles = contact.normal;
 							p.startSpeed = 4;
@@ -106,29 +106,31 @@ public class UserInput : MonoBehaviour {
 	}
 	
 	public bool IsGrappled(){
-		return GetComponent<Grapple>().IsActive();
+		return GetComponent<Grapple>().IsActive;
 	}
 	public bool IsOnGround(){
 		return onGround;
+	}
+	public bool IsJumping(){
+		return isJumping;
 	}
 	
 	public void DoMovePlayer(){
 		horizontal	= Input.GetAxis("Horizontal");
 		vertical	= Input.GetAxis("Vertical");
 		bool jumpbutton		= Input.GetButton("Jump");
-		bool isGrappled		= GetComponent<Grapple>().IsActive();
-		bool useGravity		= true;
+		bool isGrappled		= GetComponentInChildren<Grapple>().IsActive;
 		
 		Vector3 moveTarget	= new Vector3(0,0,0);
 		
 		if(onGround){
-			moveTarget.x	= Input.GetAxis("Horizontal") * 10;
+			moveTarget.x	= horizontal * moveSpeed;
 		}else if(isGrappled){
-			moveTarget.x	= Input.GetAxis("Horizontal") * 5;
-			moveTarget.y	= Input.GetAxis("Vertical") * 5;			
+			moveTarget.x	= horizontal * moveSpeed/2;
+			moveTarget.y	= vertical * moveSpeed/2;			
 		}else{
-			moveTarget.x	= Input.GetAxis("Horizontal") * 5;
-			moveTarget.y	= Input.GetAxis("Vertical") * 5;
+			moveTarget.x	= horizontal * moveSpeed/2;
+			moveTarget.y	= vertical * moveSpeed/2;
 		}
 		
 		if( onGround && !isJumping && (jumpbutton || Input.GetAxis("Vertical") > 0) ){
@@ -155,13 +157,15 @@ public class UserInput : MonoBehaviour {
 		//*/
 		//rigidbody.useGravity = useGravity;
 		rigidbody.AddForce(moveTarget);
-		yVelocity	= moveTarget.y;
+		//yVelocity	= moveTarget.y;
+		
+		if(rigidbody.velocity.magnitude > maxVelocity){
+			rigidbody.velocity	= rigidbody.velocity.normalized * maxVelocity;
+		}
 		
 		// If the player moves, start the timer
 		if(!gamemode.HasStarted() && (isJumping || moveTarget.x != 0 || Input.GetButton("Grapple"))){
 			gamemode.StartRace();
 		}
 	}
-	
-
 }

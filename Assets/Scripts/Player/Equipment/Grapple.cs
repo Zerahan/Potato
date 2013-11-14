@@ -1,10 +1,82 @@
 using UnityEngine;
 using System.Collections;
 
+public class Grapple : Equipment {
+	private		UserInput	userInput		;
+	private		LineRenderer	lineRenderer;
+	
+	//private		string		button			= "Fire1";
+	
+	public		Material	cordMaterial	;
+	public		float		minDistance		= 1f;
+	public		float		maxDistance		= 5f;
+	public		float		pullSpeed		= 4f;
+	private		Vector3		pullForce		;
+	
+	private		bool		didRaycastHit	= false;
+	private		RaycastHit	raycast			;
+	
+	private		Vector3		hitPoint		;
+	private		GameObject	hitObject		;
+	
+	public override void Start(){
+		base.Start();
+		userInput		= transform.root.GetComponent<UserInput>();
+		lineRenderer	= gameObject.AddComponent<LineRenderer>();
+		if(cordMaterial){
+			lineRenderer.material		= cordMaterial;
+		}else{
+			Debug.LogWarning("No grapple cord material selected!");
+		}
+		lineRenderer.SetColors(Color.yellow,Color.yellow);
+		lineRenderer.SetWidth(0.2f,0.2f);
+		lineRenderer.SetVertexCount(2);
+		
+		lineRenderer.renderer.enabled	= false;
+	}
+	
+	public override void Update(){
+		CastRay();
+		if( isEnabled && !userInput.IsControlLocked() ){
+			if( Input.GetButtonDown("Fire1") ){
+				DoAction(Action.Enable);
+			}else if(Input.GetButtonUp("Fire1")){
+				DoAction(Action.Disable);
+			}
+		}
+		base.Update();
+	}
+	
+	void OnGUI(){
+		if(targetIcon){
+			GUI.skin			= targetIcon;
+			Vector3 screenPoint	= Camera.main.WorldToScreenPoint(targetPoint);
+			GUI.Box(new Rect(screenPoint.x-16,(Screen.height - screenPoint.y)-16,32,32),"");
+		}
+	}
+	
+	private void CastRay(){
+		didRaycastHit	= Physics.Raycast(transform.position, userInput.GetMousePosition()-(transform.position), out raycast, maxDistance);
+		if( didRaycastHit ){
+			targetPoint	= raycast.point;
+		}else if((userInput.GetMousePosition()-transform.position).magnitude > maxDistance){
+			targetPoint	= transform.position + ((userInput.GetMousePosition()-transform.position).normalized * maxDistance);
+		}else{
+			targetPoint	= transform.position + (userInput.GetMousePosition()-transform.position);
+		}
+	}
+}
+
+/*
 public class Grapple : MonoBehaviour {
 	private Player player;
 	public Material material;
+	public GUISkin	targetIcon;
 	private UserInput userInput;
+	
+	private RaycastHit	lastRaycastHit;
+	private bool		isLastRaycastHit;
+	private Vector3		estimatedHitTarget;
 	
 	private string		useButton		= "Grapple";
 	private bool		canActivate		= true;
@@ -37,7 +109,7 @@ public class Grapple : MonoBehaviour {
 		renderer.enabled = false;
 	}
 	
-	void Update () {
+	void Update(){
 		if( !player.GetComponent<UserInput>().IsControlLocked() && lastUse < Time.time ){
 			if( Input.GetButtonDown(useButton) ){
 				DoAction(Action.Grapple);
@@ -54,6 +126,23 @@ public class Grapple : MonoBehaviour {
 				DoAction(Action.UnGrapple);
 			}
 		}
+		//isLastRaycastHit	= Physics.Raycast(transform.position + offset, userInput.GetMousePosition()-(transform.position + offset), out lastRaycastHit, maxDistance);
+		if( Physics.Raycast(transform.position + offset, userInput.GetMousePosition()-(transform.position + offset), out lastRaycastHit, maxDistance) ){
+			estimatedHitTarget		= lastRaycastHit.point;
+		}else{
+			if((userInput.GetMousePosition()-(transform.position + offset)).magnitude > maxDistance){
+				estimatedHitTarget	= transform.position + offset + ((userInput.GetMousePosition()-(transform.position + offset)).normalized * maxDistance);
+			}else{
+				estimatedHitTarget	= transform.position + offset + (userInput.GetMousePosition()-(transform.position + offset));
+			}
+		}
+	}
+	
+	void OnGUI(){
+		//GUI.Box(new Rect(screenPoint.x,(Screen.height - screenPoint.y),32,32),"");
+		GUI.skin			= targetIcon;
+		Vector3 screenPoint	= Camera.main.WorldToScreenPoint(estimatedHitTarget);
+		GUI.Box(new Rect(screenPoint.x-16,(Screen.height - screenPoint.y)-24,32,32),"");
 	}
 	
 	public bool IsActive(){
@@ -81,8 +170,6 @@ public class Grapple : MonoBehaviour {
 		return false;
 	}
 	
-	
-	
 	private bool DoGrapple(){
 		canActivate = true;
 		//if( !isActive ){
@@ -104,13 +191,18 @@ public class Grapple : MonoBehaviour {
 	}
 	
 	private void PullToHook(){
-		Vector3 direction	= (hitObject.position + hitPoint)-transform.position;
-		Vector3 velocity	= ((Time.deltaTime * hookPullSpeed) * direction);
-		
-		if(direction.magnitude >= minDistance){
-			rigidbody.velocity = (rigidbody.velocity) + (velocity);
-		}else{
-			//rigidbody.velocity = Vector3(rigidbody.velocity.x*0.9, rigidbody.velocity.y + , rigidbody.velocity.z*0.9);
+		if(isActive){
+			Vector3 direction	= (hitObject.position + hitPoint)-transform.position;
+			Vector3 velocity	= ((Time.deltaTime * hookPullSpeed) * direction);
+			
+			if(direction.magnitude >= minDistance){
+				rigidbody.velocity = (rigidbody.velocity) + (velocity);
+			}else{
+				//rigidbody.velocity = Vector3(rigidbody.velocity.x*0.9, rigidbody.velocity.y + , rigidbody.velocity.z*0.9);
+			}
+		}else if( lastRaycastHit.transform ){
+			hitObject	= lastRaycastHit.transform;
+			hitPoint	= lastRaycastHit.point - hitObject.position;
 		}
 	}
 	
@@ -137,5 +229,9 @@ public class Grapple : MonoBehaviour {
 		Gizmos.DrawWireSphere(userInput.GetMousePosition(),1f);
 		
 		Gizmos.DrawLine( transform.position, userInput.GetMousePosition() );
+		
+		Gizmos.color	= Color.red;
+		Gizmos.DrawLine( transform.position, estimatedHitTarget );
 	}
 }
+//*/

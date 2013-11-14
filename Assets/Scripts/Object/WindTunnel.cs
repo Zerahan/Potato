@@ -16,6 +16,8 @@ public class WindTunnel : MonoBehaviour{
 	}
 	
 	public void OnDrawGizmos(){
+		//Matrix4x4 rotationMatrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
+		//Gizmos.matrix	= rotationMatrix;
 		Gizmos.color	= new Color(1,1,1,0.25f);
 		Gizmos.DrawCube(transform.position,transform.localScale);
 		Gizmos.color	= Color.yellow;
