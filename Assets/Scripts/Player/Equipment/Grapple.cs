@@ -5,19 +5,21 @@ public class Grapple : Equipment {
 	private		UserInput	userInput		;
 	private		LineRenderer	lineRenderer;
 	
-	//private		string		button			= "Fire1";
+	private		string		button			= "Grapple";
+	
+	protected	string		Name			= "Magnetic Grapple";
 	
 	public		Material	cordMaterial	;
-	public		float		minDistance		= 1f;
+	public		float		minDistance		= 2f;
 	public		float		maxDistance		= 5f;
-	public		float		pullSpeed		= 4f;
-	private		Vector3		pullForce		;
+	public		float		pullForce		= 2f;
+	private		Vector3		pullDirection	;
 	
 	private		bool		didRaycastHit	= false;
 	private		RaycastHit	raycast			;
 	
 	private		Vector3		hitPoint		;
-	private		GameObject	hitObject		;
+	private		Transform	hitObject		;
 	
 	public override void Start(){
 		base.Start();
@@ -25,6 +27,7 @@ public class Grapple : Equipment {
 		lineRenderer	= gameObject.AddComponent<LineRenderer>();
 		if(cordMaterial){
 			lineRenderer.material		= cordMaterial;
+			lineRenderer.material.color	= Color.cyan;
 		}else{
 			Debug.LogWarning("No grapple cord material selected!");
 		}
@@ -38,13 +41,19 @@ public class Grapple : Equipment {
 	public override void Update(){
 		CastRay();
 		if( isEnabled && !userInput.IsControlLocked() ){
-			if( Input.GetButtonDown("Fire1") ){
+			if( Input.GetButtonDown(button) ){
 				DoAction(Action.Enable);
-			}else if(Input.GetButtonUp("Fire1")){
+			}else if(Input.GetButtonUp(button)){
 				DoAction(Action.Disable);
 			}
 		}
 		base.Update();
+	}
+	
+	public void FixedUpdate(){
+		if(IsActive){
+			transform.root.rigidbody.AddForce(pullDirection.normalized*pullForce);
+		}
 	}
 	
 	void OnGUI(){
@@ -56,14 +65,64 @@ public class Grapple : Equipment {
 	}
 	
 	private void CastRay(){
-		didRaycastHit	= Physics.Raycast(transform.position, userInput.GetMousePosition()-(transform.position), out raycast, maxDistance);
+		didRaycastHit	= Physics.Raycast(userInput.Center, userInput.GetMousePosition()-userInput.Center, out raycast, maxDistance);
 		if( didRaycastHit ){
 			targetPoint	= raycast.point;
-		}else if((userInput.GetMousePosition()-transform.position).magnitude > maxDistance){
-			targetPoint	= transform.position + ((userInput.GetMousePosition()-transform.position).normalized * maxDistance);
+		}else if((userInput.GetMousePosition()-userInput.Center).magnitude > maxDistance){
+			targetPoint	= userInput.Center + ((userInput.GetMousePosition()-userInput.Center).normalized * maxDistance);
 		}else{
-			targetPoint	= transform.position + (userInput.GetMousePosition()-transform.position);
+			targetPoint	= userInput.Center + (userInput.GetMousePosition()-userInput.Center);
 		}
+	}
+	
+	protected override void OnActiveStay(){
+		if( IsActive ){
+			if(!hitObject || (hitObject.GetComponent<BreakableObject>() && hitObject.GetComponent<BreakableObject>().IsDestroyed)){
+				lineRenderer.renderer.enabled	= false;
+				DoAction(Action.Disable);
+			}else{
+				lineRenderer.SetPosition(0,transform.position);
+				lineRenderer.SetPosition(1,hitObject.position + hitPoint);
+				pullDirection		= (hitObject.position + hitPoint)-userInput.Center;
+				if(pullDirection.magnitude < minDistance){
+					pullDirection		= Vector3.zero;
+				}else if(pullDirection.magnitude > maxDistance){
+					//OnActiveEnd();	// disconnect if too far
+				}
+			}
+		}else{
+			if( didRaycastHit && raycast.transform ){
+				lineRenderer.renderer.enabled = true;
+				IsActive	= true;
+				hitObject	= raycast.transform;
+				hitPoint	= raycast.point - hitObject.position;
+			}
+		}
+	}
+	
+	protected override void OnActiveEnd(){
+		IsActive	= false;
+		hitPoint	= Vector3.zero;
+		hitObject	= null;
+		lineRenderer.renderer.enabled = false;
+	}
+	
+	public void OnDrawGizmos(){
+		if(hitPoint != Vector3.zero){
+			Gizmos.color = Color.red;
+			Gizmos.DrawWireSphere(hitObject.position + hitPoint,1f);
+		}
+		
+		if (!userInput) {
+			userInput = transform.root.GetComponent<UserInput>();
+		}
+		
+		Gizmos.DrawWireSphere( userInput.GetMousePosition(),1f );
+		
+		Gizmos.DrawLine( userInput.Center, userInput.GetMousePosition() );
+		
+		Gizmos.color	= Color.red;
+		Gizmos.DrawLine( userInput.Center, raycast.point );
 	}
 }
 

@@ -5,10 +5,13 @@ public class Equipment : MonoBehaviour {
 	public		GUISkin		targetIcon		;
 	protected	Vector3		targetPoint		;
 	
+	protected	string		name	= "Generic Equipment";
+	public		string		Name	{ get{return name;} protected set{name	= value;} }
+	
 	private		Player player		;
 	protected	Player User			{ get{return player;} }
 	
-	protected	bool isEnabled		;
+	protected	bool isEnabled		= true;
 	public		bool IsEnabled		{ get{return isEnabled;} set{isEnabled = value;} }
 	
 	protected	bool canAct			= true;
@@ -19,7 +22,7 @@ public class Equipment : MonoBehaviour {
 	
 	protected	bool lastActState	;
 	protected	bool nextActState	;
-	public		bool ActState		{get{ return nextActState; } protected set{ lastActState = nextActState; nextActState = value; }}
+	public		bool ActState		{ get{ return nextActState; } protected set{ nextActState = value; } }
 	
 	public enum Action{
 		Enable,
@@ -36,13 +39,12 @@ public class Equipment : MonoBehaviour {
 			if(lastActState){
 				OnActiveStay();
 			}else{
-				lastActState	= nextActState;
 				OnActiveStart();
 			}
 		}else if(lastActState){
-			lastActState		= nextActState;
 			OnActiveEnd();
 		}
+		lastActState	= nextActState;
 	}
 	
 	public void AddToPlayer(){
@@ -51,21 +53,22 @@ public class Equipment : MonoBehaviour {
 	
 	public virtual void DoAction(Action act){
 		switch(act){
-		case Action.Enable:
-			if( isEnabled ){
-				ActState	= true;
-			}
-			break;
-		case Action.Disable:
-			ActState		= false;
-			break;
-		case Action.Single:
-			if( isEnabled ){
-				SingleAction();
-			}
-			break;
-		default:
-			break;
+			case Action.Enable:
+				if( isEnabled ){
+					ActState	= true;
+				}
+				break;
+			case Action.Disable:
+				IsActive	= false;
+				ActState	= false;
+				break;
+			case Action.Single:
+				if( isEnabled ){
+					SingleAction();
+				}
+				break;
+			default:
+				break;
 		}
 	}
 	
@@ -79,5 +82,8 @@ public class Equipment : MonoBehaviour {
 	}
 	
 	protected virtual void OnActiveEnd(){
+	}
+	
+	protected virtual void Disable(){
 	}
 }

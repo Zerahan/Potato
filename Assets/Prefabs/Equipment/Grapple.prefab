@@ -93,10 +93,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetIcon: {fileID: 11400000, guid: 4b272fc005bf3f245a02f4edc51c38a2, type: 2}
-  cordMaterial: {fileID: 0}
-  minDistance: 1
-  maxDistance: 10
-  pullSpeed: 4
+  cordMaterial: {fileID: 2100000, guid: b2f5b63ebead9b54db387800f46efefd, type: 2}
+  minDistance: 2
+  maxDistance: 5
+  pullForce: 2
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

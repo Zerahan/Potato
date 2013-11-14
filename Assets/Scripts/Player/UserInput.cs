@@ -25,11 +25,16 @@ public class UserInput : MonoBehaviour {
 	private		float		controlMultiplier	= 0.0f;
 	//private		float		yVelocity			;
 	
+	private		Vector3		center;
+	public		Vector3		Center				{ get{return center + transform.position;} }
+	
 	// Engine
 	
 	public void Start () {
 		player		= transform.root.GetComponent<Player>();
 		gamemode	= transform.root.GetComponent<TimedRace>();
+		center		= ((CapsuleCollider)collider).center;
+		center.z	= 0;
 	}
 	
 	public void Update(){
@@ -45,7 +50,7 @@ public class UserInput : MonoBehaviour {
 	public void OnCollisionEnter(Collision collision){
 		if(collision.gameObject){
 			onGround		= true;
-			if( collision.gameObject.GetComponent<BreakableObject>() && collision.gameObject.GetComponent<BreakableObject>().IsDestroyed() ){
+			if( collision.gameObject.GetComponent<BreakableObject>() && collision.gameObject.GetComponent<BreakableObject>().IsDestroyed ){
 				onGround	= false;
 			}
 			if(onGround){

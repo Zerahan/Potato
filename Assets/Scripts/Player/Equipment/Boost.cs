@@ -9,11 +9,11 @@ public class Boost : MonoBehaviour {
 	public float	boostRestoreDelay	= 10;
 	public float 	moveStrength		= 1f;
 	public GameObject body				;
-	public Light	light				;
 	public float	maxLightIntensity	= 4;
 	
 	private UserInput userInput;
 	private bool 	isDebug 		= false;
+	private Light	light				;
 	
 	private bool 	buttonState		;
 	private bool 	lastButtonState	;
@@ -27,13 +27,14 @@ public class Boost : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start(){
-		userInput		= GetComponent<UserInput>();
+		userInput		= transform.root.GetComponent<UserInput>();
 		boostStrength	= boostStrength * Physics.gravity.magnitude;
 		moveStrength	= moveStrength * Physics.gravity.magnitude;
+		light			= transform.root.GetComponentInChildren<Light>();
 		maxEnergy		= boostStrength * maxBoosts;
 		if (isDebug) {
 			energy = 500f;
-			rigidbody.useGravity = false;
+			transform.root.rigidbody.useGravity = false;
 		}else{
 			energy = boostStrength * startBoosts;
 		}
@@ -53,7 +54,7 @@ public class Boost : MonoBehaviour {
 		if(energy > 0 && moveDirection.magnitude > 0){
 			
 			if( Input.GetButtonDown(BUTTON) && energy >= boostStrength ){
-				rigidbody.velocity += moveDirection.normalized * boostStrength;
+				transform.root.rigidbody.velocity += moveDirection.normalized * boostStrength;
 				if (!isDebug) {
 					energy -= boostStrength;
 				}
