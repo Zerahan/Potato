@@ -315,9 +315,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1 &29404961
 GameObject:
   m_ObjectHideFlags: 0
@@ -1205,9 +1205,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1 &157882460
 GameObject:
   m_ObjectHideFlags: 0
@@ -1345,9 +1345,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1 &179494323
 GameObject:
   m_ObjectHideFlags: 0
@@ -1535,9 +1535,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!33 &195417862
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1624,7 +1624,6 @@ MonoBehaviour:
   boostRestoreDelay: 10
   moveStrength: 1
   body: {fileID: 0}
-  light: {fileID: 0}
   maxLightIntensity: 4
 --- !u!1 &200555333
 GameObject:
@@ -3770,9 +3769,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1 &364128247
 GameObject:
   m_ObjectHideFlags: 0
@@ -4100,9 +4099,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1 &431363671
 GameObject:
   m_ObjectHideFlags: 0
@@ -5238,9 +5237,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1001 &586909570
 Prefab:
   m_ObjectHideFlags: 0
@@ -5840,9 +5839,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1001 &647112387
 Prefab:
   m_ObjectHideFlags: 0
@@ -6111,9 +6110,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1 &665131492
 GameObject:
   m_ObjectHideFlags: 0
@@ -6548,6 +6547,89 @@ Prefab:
   m_RootGameObject: {fileID: 561232093}
   m_IsPrefabParent: 0
   m_IsExploded: 1
+--- !u!1 &727291233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100126, guid: 2dd337a5ff9c8e04997844a57425b230, type: 2}
+  m_PrefabInternal: {fileID: 1933661130}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 727291234}
+  - 20: {fileID: 727291238}
+  - 124: {fileID: 727291237}
+  - 92: {fileID: 727291236}
+  - 81: {fileID: 727291235}
+  m_Layer: 0
+  m_Name: MainCamera
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &727291234
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400126, guid: 2dd337a5ff9c8e04997844a57425b230, type: 2}
+  m_PrefabInternal: {fileID: 1933661130}
+  m_GameObject: {fileID: 727291233}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: .0319263935, y: 1.90882194, z: -11.4791527}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1749072034}
+--- !u!81 &727291235
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 8100000, guid: 2dd337a5ff9c8e04997844a57425b230,
+    type: 2}
+  m_PrefabInternal: {fileID: 1933661130}
+  m_GameObject: {fileID: 727291233}
+  m_Enabled: 1
+--- !u!92 &727291236
+Behaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 9200000, guid: 2dd337a5ff9c8e04997844a57425b230,
+    type: 2}
+  m_PrefabInternal: {fileID: 1933661130}
+  m_GameObject: {fileID: 727291233}
+  m_Enabled: 1
+--- !u!124 &727291237
+Behaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 12400000, guid: 2dd337a5ff9c8e04997844a57425b230,
+    type: 2}
+  m_PrefabInternal: {fileID: 1933661130}
+  m_GameObject: {fileID: 727291233}
+  m_Enabled: 1
+--- !u!20 &727291238
+Camera:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 2000000, guid: 2dd337a5ff9c8e04997844a57425b230,
+    type: 2}
+  m_PrefabInternal: {fileID: 1933661130}
+  m_GameObject: {fileID: 727291233}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: .192156866, g: .301960796, b: .474509805, a: .0196078438}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: .300000012
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 100
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_HDR: 0
 --- !u!1 &733700143
 GameObject:
   m_ObjectHideFlags: 0
@@ -6630,9 +6712,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1 &737772350
 GameObject:
   m_ObjectHideFlags: 0
@@ -6803,9 +6885,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1 &803101541
 GameObject:
   m_ObjectHideFlags: 0
@@ -6848,9 +6930,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!33 &803101544
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -11509,9 +11591,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1 &960945595
 GameObject:
   m_ObjectHideFlags: 0
@@ -11689,9 +11771,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!33 &982243838
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -11877,9 +11959,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1 &1025558491
 GameObject:
   m_ObjectHideFlags: 0
@@ -12753,9 +12835,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1 &1142390159
 GameObject:
   m_ObjectHideFlags: 0
@@ -13220,6 +13302,68 @@ MeshFilter:
   m_PrefabInternal: {fileID: 1216791900}
   m_GameObject: {fileID: 1227990035}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1245196189
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1245196190}
+  - 108: {fileID: 1245196191}
+  m_Layer: 0
+  m_Name: Point light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1245196190
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1245196189}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1749072034}
+--- !u!108 &1245196191
+Light:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1245196189}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Type: 2
+  m_Color: {r: .382352948, g: .744421899, b: 1, a: 1}
+  m_Intensity: .25
+  m_Range: 5
+  m_SpotAngle: 30
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_Strength: 1
+    m_Bias: .0500000007
+    m_Softness: 4
+    m_SoftnessFade: 1
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_ActuallyLightmapped: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 1
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 1
+  m_ShadowSamples: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_IndirectIntensity: 1
+  m_AreaSize: {x: 1, y: 1}
 --- !u!1 &1248307949
 GameObject:
   m_ObjectHideFlags: 0
@@ -13371,9 +13515,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1 &1259135810
 GameObject:
   m_ObjectHideFlags: 0
@@ -21899,7 +22043,6 @@ GameObject:
   - 114: {fileID: 1749072037}
   - 114: {fileID: 1749072036}
   - 114: {fileID: 1749072035}
-  - 114: {fileID: 1749072043}
   - 136: {fileID: 1749072040}
   m_Layer: 0
   m_Name: Player
@@ -21919,6 +22062,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 450537598}
+  - {fileID: 727291234}
+  - {fileID: 1245196190}
   m_Father: {fileID: 0}
 --- !u!114 &1749072035
 MonoBehaviour:
@@ -21948,7 +22093,7 @@ MonoBehaviour:
   cordMaterial: {fileID: 0}
   minDistance: 1
   maxDistance: 5
-  pullSpeed: 4
+  pullForce: 2
 --- !u!114 &1749072037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22024,33 +22169,13 @@ Rigidbody:
   m_GameObject: {fileID: 1749072033}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: .100000001
+  m_Drag: .0500000007
   m_AngularDrag: .0500000007
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
---- !u!114 &1749072043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400010, guid: 2dd337a5ff9c8e04997844a57425b230,
-    type: 2}
-  m_PrefabInternal: {fileID: 1933661130}
-  m_GameObject: {fileID: 1749072033}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c3ec3a8052a0954599a7171db23907d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boostStrength: .5
-  startBoosts: 1
-  maxBoosts: 10
-  boostRestoreDelay: 10
-  moveStrength: 1
-  body: {fileID: 0}
-  light: {fileID: 0}
-  maxLightIntensity: 4
 --- !u!1 &1751047999
 GameObject:
   m_ObjectHideFlags: 0
@@ -23616,7 +23741,7 @@ MonoBehaviour:
   cordMaterial: {fileID: 0}
   minDistance: 1
   maxDistance: 10
-  pullSpeed: 4
+  pullForce: 2
 --- !u!1 &1855947073
 GameObject:
   m_ObjectHideFlags: 0
@@ -25377,9 +25502,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1 &1931088366
 GameObject:
   m_ObjectHideFlags: 0
@@ -25483,7 +25608,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 5400000, guid: 2dd337a5ff9c8e04997844a57425b230, type: 2}
       propertyPath: m_Drag
-      value: .100000001
+      value: .0500000007
+      objectReference: {fileID: 0}
+    - target: {fileID: 400126, guid: 2dd337a5ff9c8e04997844a57425b230, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -11.4791527
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2dd337a5ff9c8e04997844a57425b230, type: 2}
@@ -25572,9 +25701,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1 &1989525861
 GameObject:
   m_ObjectHideFlags: 0
@@ -25712,9 +25841,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1 &2010382853
 GameObject:
   m_ObjectHideFlags: 0
@@ -25933,9 +26062,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1 &2055567050
 GameObject:
   m_ObjectHideFlags: 0
@@ -26786,9 +26915,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  sounds: []
+  breakSounds: []
 --- !u!1001 &2137683534
 Prefab:
   m_ObjectHideFlags: 0

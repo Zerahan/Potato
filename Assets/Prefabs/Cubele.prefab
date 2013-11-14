@@ -137,7 +137,7 @@ MonoBehaviour:
   sounds:
   - {fileID: 8300000, guid: 1d907da20bf5cfe4a8bc56f8eccaff3b, type: 3}
   - {fileID: 8300000, guid: 5d95ffe8a3910df4792814c194a43309, type: 3}
-  - {fileID: 8300000, guid: 5feec4347f036a545be1587ae237d428, type: 3}
+  - {fileID: 8300000, guid: c0d523697f819644ea96a76d9076ca63, type: 3}
   - {fileID: 8300000, guid: c0d523697f819644ea96a76d9076ca63, type: 3}
   - {fileID: 8300000, guid: 3515b6fe1ef496642979d50c4c972cdb, type: 3}
   - {fileID: 8300000, guid: 6187b1146f3581d458bcc5562e20e653, type: 3}
@@ -155,17 +155,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakSpeed: 15
+  breakVelocity: 15
   particle: {fileID: 19800000, guid: 9b51a5fbc5dbf17478fe9b52f3ea4cfd, type: 2}
-  sounds:
-  - {fileID: 8300000, guid: 1d907da20bf5cfe4a8bc56f8eccaff3b, type: 3}
-  - {fileID: 8300000, guid: 5d95ffe8a3910df4792814c194a43309, type: 3}
-  - {fileID: 8300000, guid: 5feec4347f036a545be1587ae237d428, type: 3}
-  - {fileID: 8300000, guid: c0d523697f819644ea96a76d9076ca63, type: 3}
-  - {fileID: 8300000, guid: 3515b6fe1ef496642979d50c4c972cdb, type: 3}
-  - {fileID: 8300000, guid: 6187b1146f3581d458bcc5562e20e653, type: 3}
-  - {fileID: 8300000, guid: 32c0a4f48bcea4643bc4b144667cbd63, type: 3}
-  - {fileID: 8300000, guid: 1dafe5a3e0b1b0e41bf2aa3e0e08db34, type: 3}
+  breakSounds: []
 --- !u!198 &19800000
 ParticleSystem:
   m_ObjectHideFlags: 1
