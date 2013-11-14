@@ -52,7 +52,8 @@ public class Grapple : Equipment {
 	
 	public void FixedUpdate(){
 		if(IsActive){
-			transform.root.rigidbody.AddForce(pullDirection.normalized*pullForce);
+			//transform.root.rigidbody.AddForce(pullDirection.normalized*pullForce);
+			transform.root.rigidbody.velocity	= transform.root.rigidbody.velocity + pullDirection.normalized*pullForce;
 		}
 	}
 	
