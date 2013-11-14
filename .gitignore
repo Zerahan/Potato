@@ -17,7 +17,7 @@ Temp
 Build
 Story
 Binary
-*.unity
+#*.unity
 *.csproj
 *.sln
 *.userprefs
