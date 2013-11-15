@@ -8274,6 +8274,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 19800000, guid: 6bc10d0ee6fb078499b6e9520f68d211, type: 2}
+  moveForce: 10
+  minVelocity: 20
+  frictionForce: 100
 --- !u!114 &1749072037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8372,7 +8375,7 @@ Rigidbody:
   m_GameObject: {fileID: 1749072033}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: .00999999978
+  m_Drag: .25
   m_AngularDrag: .0500000007
   m_UseGravity: 1
   m_IsKinematic: 0
