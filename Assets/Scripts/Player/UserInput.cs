@@ -58,25 +58,30 @@ public class UserInput : MonoBehaviour {
 	// Spawns particles and light at the point of collision, and gives the player the ability to jump again.
 	public void OnCollisionEnter(Collision collision){
 		if(collision.gameObject){
-			onGround		= true;
-			if( collision.gameObject.GetComponent<BreakableObject>() && collision.gameObject.GetComponent<BreakableObject>().IsDestroyed ){
-				onGround	= false;
-			}
-			if(onGround){
-				foreach(ContactPoint contact in collision.contacts){
-					//float angle	=  Mathf.Tan(contact.normal.y/contact.normal.x);
-					if( contact.normal.y > 0f || contact.normal.x > 0.5f || contact.normal.x < -0.5f ){
-						isJumping = false;
-						Debug.DrawRay(contact.point, contact.normal * 5, Color.red,1,true);
-						if( particle && lastParticleSpawn < Time.time ){
-							lastParticleSpawn = Time.time + 0.25f;
-							ParticleSystem p = (ParticleSystem)Instantiate(particle,contact.point,Quaternion.identity);
-							p.transform.eulerAngles = contact.normal;
-							p.startSpeed = 4;
+			//if (collision.gameObject.GetComponent<BreakableObject>()) {
+			//	onGround = false;
+			//	isJumping = false;
+			//}else{
+				onGround		= true;
+				if( collision.gameObject.GetComponent<BreakableObject>() && collision.gameObject.GetComponent<BreakableObject>().IsDestroyed ){
+					onGround	= false;
+				}
+				if(onGround){
+					foreach(ContactPoint contact in collision.contacts){
+						//float angle	=  Mathf.Tan(contact.normal.y/contact.normal.x);
+						if( contact.normal.y > 0f || contact.normal.x > 0.5f || contact.normal.x < -0.5f ){
+							isJumping = false;
+							Debug.DrawRay(contact.point, contact.normal * 5, Color.red,1,true);
+							if( particle && lastParticleSpawn < Time.time ){
+								lastParticleSpawn = Time.time + 0.25f;
+								ParticleSystem p = (ParticleSystem)Instantiate(particle,contact.point,Quaternion.identity);
+								p.transform.eulerAngles = contact.normal;
+								p.startSpeed = 4;
+							}
 						}
 					}
 				}
-			}
+			//}
 		}
 	}
 	
@@ -148,6 +153,7 @@ public class UserInput : MonoBehaviour {
 				return;
 			}
 			
+			/*
 			if (rigidbody.velocity.magnitude < walkSpeed) {
 				if (inputX == 0){
 					moveForce.x = frictionForce * rigidbody.velocity.x * -2 / walkSpeed;
@@ -156,9 +162,12 @@ public class UserInput : MonoBehaviour {
 					moveForce.x = frictionForce * inputX;
 				}
 			}
+			//*/
+			
+			moveForce.x	= inputSmoothX * moveForceFactor * 2;
 		}else if(isGrappled){
-			moveForce.x	= inputSmoothX * moveForceFactor/2;
-			moveForce.y	= inputSmoothY * moveForceFactor/2;			
+			moveForce.x	= inputSmoothX * moveForceFactor;
+			moveForce.y	= inputSmoothY * moveForceFactor;			
 		}else{
 			moveForce.x	= inputSmoothX * moveForceFactor/2;
 			moveForce.y	= inputSmoothY * moveForceFactor/2;
