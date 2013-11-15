@@ -13,6 +13,7 @@ GameObject:
   - 23: {fileID: 2300000}
   - 54: {fileID: 5400000}
   - 114: {fileID: 11400000}
+  - 108: {fileID: 10800000}
   m_Layer: 0
   m_Name: Bubble
   m_TagString: Untagged
@@ -71,6 +72,41 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
+--- !u!108 &10800000
+Light:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Type: 2
+  m_Color: {r: 0, g: 1, b: 1, a: 1}
+  m_Intensity: 1
+  m_Range: 4
+  m_SpotAngle: 30
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_Strength: 1
+    m_Bias: .0500000007
+    m_Softness: 4
+    m_SoftnessFade: 1
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_ActuallyLightmapped: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 1
+  m_ShadowSamples: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_IndirectIntensity: 1
+  m_AreaSize: {x: 1, y: 1}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -82,16 +118,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99517cc8f39561e499d14cfd0730b11a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particle: {fileID: 19800000, guid: bb13e03370426d9458bda50e1fc674d3, type: 2}
+  particle: {fileID: 19800000, guid: f4924232307c92543a3d8d797ed84f54, type: 2}
   sounds:
-  - {fileID: 8300000, guid: eb6affa3c46f39f4f90dbfb1d4eacd29, type: 3}
-  - {fileID: 8300000, guid: 462c6b560a0bc534c9f70aa86e0ed98e, type: 3}
-  - {fileID: 8300000, guid: 7da802058334f6c4e9a4ab9248e8f7d7, type: 3}
-  - {fileID: 8300000, guid: b9f889ed9f3905a4e807f138c5c3bfe4, type: 3}
-  - {fileID: 8300000, guid: 11f54ebe950796b4d946fd1237fc7731, type: 3}
-  - {fileID: 8300000, guid: dc8f5f39ec669e44da5495901c0cbcee, type: 3}
-  - {fileID: 8300000, guid: e41c0393c1022a047ad340bd139be502, type: 3}
-  - {fileID: 8300000, guid: 84051ad653cc8f041af2a44a36122c26, type: 3}
+  - {fileID: 8300000, guid: 1d907da20bf5cfe4a8bc56f8eccaff3b, type: 3}
+  - {fileID: 8300000, guid: 5d95ffe8a3910df4792814c194a43309, type: 3}
+  - {fileID: 8300000, guid: 5feec4347f036a545be1587ae237d428, type: 3}
+  - {fileID: 8300000, guid: c0d523697f819644ea96a76d9076ca63, type: 3}
+  - {fileID: 8300000, guid: 3515b6fe1ef496642979d50c4c972cdb, type: 3}
+  - {fileID: 8300000, guid: 6187b1146f3581d458bcc5562e20e653, type: 3}
+  - {fileID: 8300000, guid: 32c0a4f48bcea4643bc4b144667cbd63, type: 3}
+  - {fileID: 8300000, guid: 1dafe5a3e0b1b0e41bf2aa3e0e08db34, type: 3}
   maxMass: 1
 --- !u!135 &13500000
 SphereCollider:

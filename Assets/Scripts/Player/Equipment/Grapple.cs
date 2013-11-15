@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using GameSettings;
 
 public class Grapple : Equipment {
 	private		UserInput	userInput		;
@@ -22,6 +23,9 @@ public class Grapple : Equipment {
 	private		Transform	hitObject		;
 	
 	public override void Start(){
+		slots		= new EquipmentSlot[2];
+		slots[0]	= EquipmentSlot.LeftHand;
+		slots[1]	= EquipmentSlot.RightHand;
 		base.Start();
 		userInput		= transform.root.GetComponent<UserInput>();
 		lineRenderer	= gameObject.AddComponent<LineRenderer>();
@@ -82,7 +86,7 @@ public class Grapple : Equipment {
 				lineRenderer.renderer.enabled	= false;
 				DoAction(Action.Disable);
 			}else{
-				lineRenderer.SetPosition(0,transform.position);
+				lineRenderer.SetPosition(0,player.GetSlotPosition(slots[0]));
 				lineRenderer.SetPosition(1,hitObject.position + hitPoint);
 				pullDirection		= (hitObject.position + hitPoint)-userInput.Center;
 				if(pullDirection.magnitude < minDistance){
@@ -96,7 +100,7 @@ public class Grapple : Equipment {
 				IsActive	= true;
 				hitObject	= raycast.transform;
 				hitPoint	= raycast.point - hitObject.position;
-				lineRenderer.SetPosition(0,transform.position);
+				lineRenderer.SetPosition(0,player.GetSlotPosition(slots[0]));
 				lineRenderer.SetPosition(1,hitObject.position + hitPoint);
 				lineRenderer.renderer.enabled = true;
 			}

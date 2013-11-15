@@ -8,9 +8,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400000}
-  - 114: {fileID: 11400000}
   m_Layer: 0
-  m_Name: Booster
+  m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.0017190919, y: 1.22826862, z: -.0461905152}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -51,9 +50,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
-  m_LocalRotation: {x: -8.47032846e-22, y: -1.18266115e-16, z: -9.17805963e-23, w: 1}
-  m_LocalPosition: {x: .00171862182, y: .141795397, z: .145675778}
-  m_LocalScale: {x: .211464971, y: .358253181, z: .156334698}
+  m_LocalRotation: {x: -.705679417, y: .707970083, z: -.0236840807, w: .0152969379}
+  m_LocalPosition: {x: .00046824466, y: -1.35186128e-05, z: .00014761588}
+  m_LocalScale: {x: .00254114973, y: .0025411488, z: .00254114764}
   m_Children: []
   m_Father: {fileID: 400000}
 --- !u!23 &2300000
@@ -81,25 +80,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c3ec3a8052a0954599a7171db23907d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boostStrength: .5
-  startBoosts: 1
-  maxBoosts: 10
-  boostRestoreDelay: 10
-  moveStrength: 1
-  body: {fileID: 0}
-  light: {fileID: 0}
-  maxLightIntensity: 4
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

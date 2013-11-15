@@ -18,7 +18,7 @@ public class Bubble : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start (){
-		
+		transform.localScale	= Vector3.zero;
 	}
 	
 	// Update is called once per frame

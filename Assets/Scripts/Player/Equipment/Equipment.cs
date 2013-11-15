@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GameSettings;
 
 public class Equipment : MonoBehaviour {
 	public		GUISkin		targetIcon		;
@@ -8,7 +9,7 @@ public class Equipment : MonoBehaviour {
 	protected	string		name	= "Generic Equipment";
 	public		string		Name	{ get{return name;} protected set{name	= value;} }
 	
-	private		Player player		;
+	protected	Player player		;
 	protected	Player User			{ get{return player;} }
 	
 	protected	bool isEnabled		= true;
@@ -24,6 +25,8 @@ public class Equipment : MonoBehaviour {
 	protected	bool nextActState	;
 	public		bool ActState		{ get{ return nextActState; } protected set{ nextActState = value; } }
 	
+	public		EquipmentSlot[]	slots;
+	
 	public enum Action{
 		Enable,
 		Disable,
@@ -32,6 +35,11 @@ public class Equipment : MonoBehaviour {
 	
 	public virtual void Start(){
 		player	= transform.root.GetComponentInChildren<Player>();
+		if( slots.Length > 0 ){
+			if(!player.RegisterEquipment(slots)){
+				Debug.Log("Failed to register equipment!");
+			}
+		}
 	}
 	
 	public virtual void Update(){

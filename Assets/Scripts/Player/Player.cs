@@ -16,13 +16,8 @@ public class Player : MonoBehaviour {
 	 * SetControlLocked(bool)	// Locks/unlocks controls
 	 * 
 	 * To Do:
-	 *	The camera should be handled by a seperate script.
-	 *	Record keeping should be handled by a seperate script on per-map basis.
-	 *		Set best win time to player's best, or 10th place (if no player score on record). Something like "bestWinTime = Records.GetPlayerRecord();"
-	 *		Award stars based on completion time. 1 for completing, 2 for under 20 seconds, 3 for under 10
 	 *	Replace the "dropAmount" stuff with something that calculates the map's bounds, and resets the player if they manage to escape those bounds
 	 *		Possible easter eggs for skilled players?
-	 *	Automatically get the player's visible body
 	 *	Make player into a prefab that does not collide with other players (potential multiplayer)
 	//*/
 	
@@ -42,7 +37,7 @@ public class Player : MonoBehaviour {
 	private	Vector3 cameraPositionMin	= new Vector3(0,2,-5);
 	private	Vector3 cameraPositionMax	= new Vector3(0,3,-20);
 	
-	public	List<Equipment> equipment	= new List<Equipment>();
+	public	List<GameObject> equipment	= new List<GameObject>();
 	
 	public AnimationClip idleAnimation;
 	public AnimationClip walkAnimation;
@@ -56,19 +51,44 @@ public class Player : MonoBehaviour {
 	public float landAnimationSpeed		= 1.0f;
 	
 	private Animation _animation;
-		
+	
 	public void Start(){
 		userInput		= GetComponent<UserInput>();
 		cameraZoom		= 1f;
 		Camera.main.transform.localPosition	= (cameraPositionMin * (1-cameraZoom)) + (cameraPositionMax * (cameraZoom));
 	}
-
+	 
 	void Awake ()
 	{
 		//moveDirection = transform.TransformDirection(Vector3.forward);
-		
 		_animation = body.GetComponent<Animation>();
-				
+		foreach(GameObject obj in equipment){
+			obj.GetComponentInChildren<Renderer>().enabled = false;
+		}
+	}
+	
+	public bool RegisterEquipment(EquipmentSlot[] slots){
+		bool hasRegistered	= true;
+		foreach( EquipmentSlot slot in slots ){
+			if( (equipment[(int)slot]).GetComponentInChildren<Renderer>().enabled ){
+				Debug.Log("Equipment failed to register in slot: " + slot);
+				hasRegistered	= false;
+			}
+		}
+		if( hasRegistered ){
+			foreach( EquipmentSlot slot in slots ){
+				equipment[(int)slot].GetComponentInChildren<Renderer>().enabled	= true;
+				//Debug.Log("Equipment registered in slot: " + equipment[(int)slot] + " @ " + slot + " | " + equipment[(int)slot].GetComponentInChildren<Renderer>().enabled);
+			}
+		}
+		return hasRegistered;
+	}
+	
+	public Vector3 GetSlotPosition( EquipmentSlot slot ){
+		if( equipment[(int)slot].GetComponentInChildren<Renderer>().enabled ){
+			return equipment[(int)slot].GetComponentInChildren<Transform>().position;
+		}
+		return Vector3.zero;
 	}
 	
 	public void Update () {

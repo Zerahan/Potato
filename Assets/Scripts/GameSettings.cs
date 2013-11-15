@@ -2,5 +2,5 @@
 using System.Collections;
 
 namespace GameSettings{
-	public enum EquipmentSlots{Head,Chest,Belt,LeftArm,LeftHand,LeftLeg,RightArm,RightHand,RightLeg,Feet}
+	public enum EquipmentSlot{Head,Chest,Back,Belt,LeftUpperArm,LeftForearm,LeftHand,LeftGlove,LeftThigh,LeftCalf,LeftFoot,RightUpperArm,RightForearm,RightHand,RightGlove,RightThigh,RightCalf,RightFoot}
 }
