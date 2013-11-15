@@ -9,21 +9,26 @@ public class UserInput : MonoBehaviour {
 	//*/
 	
 	public		ParticleSystem particle			;	// The particles that are spawned when THIS player collides with something
+	public		float		moveForce			= 10f;
+	public		float		minVelocity			= 20f;	
+	public		float		frictionForce		= 100f;	
 	
 	private		Player		player				;
 	private		TimedRace	gamemode			;
 	private		bool		isJumping			= false;
 	private		bool		onGround			= true;
 	private		bool		isAttachedToWall	= false;
-	private		float		moveSpeed			= 10f;
 	private		float		lastParticleSpawn	;
 	private		bool		controlsLocked		= false;
 	private		float		horizontal			;
 	private		float		vertical			;
+	private		Vector3		velocityTarget		;
+	private		Vector3		velocity			;
+	private		float		frictionForceVal	;
 	
 	private		float		maxVelocity			= 50f;
 	private		float		controlMultiplier	= 0.0f;
-	//private		float		yVelocity			;
+	//private		float		yVelocity		;
 	
 	private		Vector3		center;
 	public		Vector3		Center				{ get{return center + transform.position;} }
@@ -89,8 +94,7 @@ public class UserInput : MonoBehaviour {
 	
 	public void OnCollisionExit(){
 		onGround	= false;
-	}
-	
+	}	
 	
 	// Custom
 	
@@ -121,26 +125,35 @@ public class UserInput : MonoBehaviour {
 	}
 	
 	public void DoMovePlayer(){
-		horizontal	= Input.GetAxis("Horizontal");
-		vertical	= Input.GetAxis("Vertical");
+		horizontal			= Input.GetAxis("Horizontal");
+		vertical			= Input.GetAxis("Vertical");
 		bool jumpbutton		= Input.GetButton("Jump");
 		bool isGrappled		= GetComponentInChildren<Grapple>().IsActive;
 		
-		Vector3 moveTarget	= new Vector3(0,0,0);
+		velocityTarget	= new Vector3(0,0,0);
+		velocity = rigidbody.velocity;
+		
 		
 		if(onGround){
-			moveTarget.x	= horizontal * moveSpeed;
+			velocityTarget.x	= horizontal * moveForce * 2;
 		}else if(isGrappled){
-			moveTarget.x	= horizontal * moveSpeed/2;
-			moveTarget.y	= vertical * moveSpeed/2;			
+			velocityTarget.x	= horizontal * moveForce/2;
+			velocityTarget.y	= vertical * moveForce/2;			
 		}else{
-			moveTarget.x	= horizontal * moveSpeed/2;
-			moveTarget.y	= vertical * moveSpeed/2;
+			velocityTarget.x	= horizontal * moveForce/2;
+			velocityTarget.y	= vertical * moveForce/2;
 		}
 		
 		if( onGround && !isJumping && (jumpbutton || Input.GetAxis("Vertical") > 0) ){
 			isJumping = true;
 			rigidbody.velocity	= rigidbody.velocity + new Vector3(0,11,0);
+		}
+		
+		if (rigidbody.velocity.magnitude < minVelocity){
+			frictionForceVal	= Input.GetAxisRaw("Horizontal") * frictionForce / (1 + 0.5f * rigidbody.velocity.magnitude);
+			velocityTarget.x	= velocityTarget.x + frictionForceVal;
+		}else{
+			frictionForceVal	= 0;
 		}
 		/*
 		if(Input.GetAxis("Vertical") != 0){
@@ -161,7 +174,7 @@ public class UserInput : MonoBehaviour {
 		}
 		//*/
 		//rigidbody.useGravity = useGravity;
-		rigidbody.AddForce(moveTarget);
+		rigidbody.AddForce(velocityTarget);
 		//yVelocity	= moveTarget.y;
 		
 		if(rigidbody.velocity.magnitude > maxVelocity){
@@ -169,7 +182,7 @@ public class UserInput : MonoBehaviour {
 		}
 		
 		// If the player moves, start the timer
-		if(!gamemode.HasStarted() && (isJumping || moveTarget.x != 0 || Input.GetButton("Action1"))){
+		if(!gamemode.HasStarted() && (isJumping || velocityTarget.x != 0 || Input.GetButton("Action1"))){
 			gamemode.StartRace();
 		}
 	}
