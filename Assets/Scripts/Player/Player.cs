@@ -149,12 +149,12 @@ public class Player : MonoBehaviour {
 						_animation.CrossFade(jumpPoseAnimation.name);				
 					}
 				}else{
-					if(rigidbody.velocity.magnitude > 4){
+					if(rigidbody.velocity.magnitude > 12){
 						_animation[runAnimation.name].speed		= Mathf.Clamp(rigidbody.velocity.magnitude, 0.0f, runMaxAnimationSpeed);
-						_animation.CrossFade(runAnimation.name);
+						_animation.CrossFade(runAnimation.name,0.3f);
 					}else{
 						_animation[walkAnimation.name].speed	= Mathf.Clamp(rigidbody.velocity.magnitude, 0.0f, walkMaxAnimationSpeed);
-						_animation.CrossFade(walkAnimation.name);
+						_animation.CrossFade(walkAnimation.name,0.5f);
 					}
 				}
 			}

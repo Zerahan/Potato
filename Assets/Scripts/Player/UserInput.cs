@@ -10,7 +10,7 @@ public class UserInput : MonoBehaviour {
 	
 	public		ParticleSystem particle			;	// The particles that are spawned when THIS player collides with something
 	public		float		moveForce			= 10f;
-	public		float		minVelocity			= 20f;	
+	public		float		walkVelocity		= 20f;	
 	public		float		frictionForce		= 100f;	
 	
 	private		Player		player				;
@@ -149,7 +149,7 @@ public class UserInput : MonoBehaviour {
 			rigidbody.velocity	= rigidbody.velocity + new Vector3(0,11,0);
 		}
 		
-		if (rigidbody.velocity.magnitude < minVelocity){
+		if (onGround && !isJumping && rigidbody.velocity.magnitude < walkVelocity){
 			frictionForceVal	= Input.GetAxisRaw("Horizontal") * frictionForce / (1 + 0.5f * rigidbody.velocity.magnitude);
 			velocityTarget.x	= velocityTarget.x + frictionForceVal;
 		}else{
