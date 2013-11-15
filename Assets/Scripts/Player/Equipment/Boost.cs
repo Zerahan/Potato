@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Boost : MonoBehaviour {
-	private string	BUTTON				= "Boost";
+	private string	BUTTON				= "Action2";
 	public float 	boostStrength		= 0.5f;
 	public int 		startBoosts			= 1;
 	public int 		maxBoosts			= 10;

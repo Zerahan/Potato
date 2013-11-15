@@ -5,7 +5,7 @@ public class Grapple : Equipment {
 	private		UserInput	userInput		;
 	private		LineRenderer	lineRenderer;
 	
-	private		string		button			= "Grapple";
+	private		string		button			= "Action1";
 	
 	protected	string		Name			= "Magnetic Grapple";
 	
@@ -27,7 +27,7 @@ public class Grapple : Equipment {
 		lineRenderer	= gameObject.AddComponent<LineRenderer>();
 		if(cordMaterial){
 			lineRenderer.material		= cordMaterial;
-			lineRenderer.material.color	= Color.cyan;
+			lineRenderer.SetColors(Color.cyan, Color.cyan);
 		}else{
 			Debug.LogWarning("No grapple cord material selected!");
 		}
@@ -140,7 +140,7 @@ public class Grapple : MonoBehaviour {
 	private bool		isLastRaycastHit;
 	private Vector3		estimatedHitTarget;
 	
-	private string		useButton		= "Grapple";
+	private string		useButton		= "Action1";
 	private bool		canActivate		= true;
 	private bool		isActive		;
 	private float		lastUse			;

@@ -169,7 +169,7 @@ public class UserInput : MonoBehaviour {
 		}
 		
 		// If the player moves, start the timer
-		if(!gamemode.HasStarted() && (isJumping || moveTarget.x != 0 || Input.GetButton("Grapple"))){
+		if(!gamemode.HasStarted() && (isJumping || moveTarget.x != 0 || Input.GetButton("Action1"))){
 			gamemode.StartRace();
 		}
 	}
