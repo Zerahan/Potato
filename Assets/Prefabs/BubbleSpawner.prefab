@@ -41,7 +41,7 @@ MonoBehaviour:
   spawnRate: 2
   maxSpawns: 10
   minAge: 2
-  maxAge: 20
+  maxAge: 30
   bubble: {fileID: 100000, guid: 8f166cb4aad3a3e46ba2e5d3fc2e6c70, type: 2}
 --- !u!1001 &100100000
 Prefab:

@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 400000}
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
+  - 114: {fileID: 11400006}
   m_Layer: 0
   m_Name: Liquid
   m_TagString: Untagged
@@ -28,6 +29,7 @@ GameObject:
   - 33: {fileID: 3300002}
   - 65: {fileID: 6500002}
   - 23: {fileID: 2300002}
+  - 114: {fileID: 11400004}
   m_Layer: 0
   m_Name: Back
   m_TagString: Untagged
@@ -46,6 +48,7 @@ GameObject:
   - 33: {fileID: 3300004}
   - 65: {fileID: 6500004}
   - 23: {fileID: 2300004}
+  - 114: {fileID: 11400008}
   m_Layer: 0
   m_Name: Back
   m_TagString: Untagged
@@ -64,6 +67,7 @@ GameObject:
   - 33: {fileID: 3300006}
   - 65: {fileID: 6500006}
   - 23: {fileID: 2300006}
+  - 114: {fileID: 11400010}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -410,6 +414,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50050fd523354f04483f855d2f481ab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11400004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e214a768e777e1489bb09b39167b7a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scale: .25
+--- !u!114 &11400006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e214a768e777e1489bb09b39167b7a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scale: 4
+--- !u!114 &11400008
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e214a768e777e1489bb09b39167b7a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scale: .25
+--- !u!114 &11400010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e214a768e777e1489bb09b39167b7a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scale: .25
 --- !u!198 &19800000
 ParticleSystem:
   m_ObjectHideFlags: 1

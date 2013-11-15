@@ -37,7 +37,7 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Grapple
+    m_Name: Action1
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -53,7 +53,7 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Boost
+    m_Name: Action2
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -69,7 +69,7 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Fire3
+    m_Name: Action3
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
