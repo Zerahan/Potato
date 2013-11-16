@@ -20,8 +20,8 @@ public class Wind : MonoBehaviour {
 	void Update () {
 		//*
 		velocity = rigidbody.velocity.magnitude;
-		if (velocity > 0.5) {
-			sound.volume = rigidbody.velocity.magnitude / 20;
+		if (velocity > 4) {
+			sound.volume = Mathf.Min(0.1f, 0.1f * rigidbody.velocity.magnitude);
 		}else{
 			sound.volume = 0;
 		}
