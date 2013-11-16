@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
  
@@ -15,8 +16,7 @@ public class AutoTileTexture : MonoBehaviour {
 	 
 	}
 	void OnDrawGizmos() {
-		#if UNITY_EDITOR
-	 	this.gameObject.renderer.sharedMaterial.SetTextureScale("_MainTex",new Vector2(scale * this.gameObject.transform.lossyScale.x, scale * this.gameObject.transform.lossyScale.y)) ;
-		#endif
+	 	this.gameObject.renderer.sharedMaterial.SetTextureScale("_MainTex",new Vector2(scale * this.gameObject.transform.lossyScale.x, scale * this.gameObject.transform.lossyScale.y));
 	}
 }
+#endif
