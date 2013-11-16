@@ -16,7 +16,6 @@ public class UserInput : MonoBehaviour {
 	private		Player		player				;
 	private		TimedRace	gamemode			;
 	private		bool		isJumping			= false;
-	private		bool		onGround			= true;
 	private		bool		isAttachedToWall	= false;
 	private		float		lastParticleSpawn	;
 	private		bool		controlsLocked		= false;
@@ -29,6 +28,10 @@ public class UserInput : MonoBehaviour {
 	private		float		velocityMag			;
 	private		float		frictionForceVal	;
 	
+	private		CapsuleCollider	collider		;
+	private		bool		onGround			= true;	
+	private		float		nextGroundCheck		;
+	
 	private		float		maxVelocity			= 50f;
 	private		float		controlMultiplier	= 0.0f;
 	//private		float		yVelocity		;
@@ -36,11 +39,13 @@ public class UserInput : MonoBehaviour {
 	private		Vector3		center;
 	public		Vector3		Center				{ get{return center + transform.position;} }
 	
+	
 	// Engine
 	
 	public void Start () {
 		player		= transform.root.GetComponent<Player>();
 		gamemode	= transform.root.GetComponent<TimedRace>();
+		collider	= transform.root.GetComponent<CapsuleCollider>();
 		center		= ((CapsuleCollider)collider).center;
 		center.z	= 0;
 		rigidbody.velocity = Vector3.zero;
@@ -127,6 +132,11 @@ public class UserInput : MonoBehaviour {
 		return GetComponent<Grapple>().IsActive;
 	}
 	public bool IsOnGround(){
+		if( nextGroundCheck < Time.time ){
+			nextGroundCheck	= Time.time + 0.1;
+			RaycastHit hit;
+			onGround		= Physics.CapsuleCast(transform.position,transform.position + collider.height,collider.radius, hit, 10);
+		}
 		return onGround;
 	}
 	public bool IsJumping(){
