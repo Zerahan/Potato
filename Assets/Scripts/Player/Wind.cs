@@ -9,7 +9,7 @@ public class Wind : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		sound	= rigidbody.GetComponent<AudioSource>();
+		sound	= Camera.main.GetComponent<AudioSource>();
 		sound.clip		= audio;
 		sound.volume	= 0;
 		sound.pitch		= 0.8f;
@@ -18,11 +18,13 @@ public class Wind : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		//*
 		velocity = rigidbody.velocity.magnitude;
-		if (velocity > 1) {
-			sound.volume = (rigidbody.velocity.magnitude - 5) / 500;
+		if (velocity > 4) {
+			sound.volume = Mathf.Min(0.1f, 0.1f * rigidbody.velocity.magnitude);
 		}else{
 			sound.volume = 0;
 		}
+		//*/
 	}
 }
