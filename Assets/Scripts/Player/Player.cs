@@ -27,7 +27,7 @@ public class Player : MonoBehaviour {
 	private UserInput userInput;
 	
 	private float timer;
-	private int dropAmount		= -5;		// If the player gets outside the map, this is how far down they can drop before resetting
+	private int dropAmount		= -50;		// If the player gets outside the map, this is how far down they can drop before resetting
 	
 	//private float debugFloat;
 	

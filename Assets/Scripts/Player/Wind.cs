@@ -2,10 +2,10 @@
 using System.Collections;
 
 public class Wind : MonoBehaviour {
-	public AudioClip audio;
+	public AudioClip audio		;
 	
 	private AudioSource sound;
-	private float velocity;
+	private	float	startSpeed	= 8;
 
 	// Use this for initialization
 	void Start () {
@@ -19,9 +19,8 @@ public class Wind : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//*
-		velocity = rigidbody.velocity.magnitude;
-		if (velocity > 4) {
-			sound.volume = Mathf.Min(0.1f, 0.1f * rigidbody.velocity.magnitude);
+		if (rigidbody.velocity.magnitude > startSpeed) {
+			sound.volume = Mathf.Min(1f, Mathf.Pow((rigidbody.velocity.magnitude-startSpeed)/50,2));
 		}else{
 			sound.volume = 0;
 		}

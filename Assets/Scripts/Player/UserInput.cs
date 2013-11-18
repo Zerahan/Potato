@@ -19,6 +19,7 @@ public class UserInput : MonoBehaviour {
 	private		bool		isAttachedToWall	= false;
 	private		float		lastParticleSpawn	;
 	private		bool		controlsLocked		= false;
+	public		bool		ControlsLocked		{get{return controlsLocked;}set{controlsLocked = value;Debug.Log("Controls locked outside of UserInput!");}}
 	private		float		inputX				;
 	private		float		inputY				;
 	private		float		inputSmoothX		;
@@ -51,47 +52,27 @@ public class UserInput : MonoBehaviour {
 		rigidbody.velocity = Vector3.zero;
 	}
 	
-	public void Update(){
-	}
-	
-	public void FixedUpdate () {
-		if(player.isHuman && !controlsLocked){
-			DoMovePlayer();
-		}
-	}
-	
 	// Spawns particles and light at the point of collision, and gives the player the ability to jump again.
 	public void OnCollisionEnter(Collision collision){
-		if(collision.gameObject){
-			//if (collision.gameObject.GetComponent<BreakableObject>()) {
-			//	onGround = false;
-			//	isJumping = false;
-			//}else{
-				onGround		= true;
-				if( collision.gameObject.GetComponent<BreakableObject>() && collision.gameObject.GetComponent<BreakableObject>().IsDestroyed ){
-					onGround	= false;
-				}
-				if(onGround){
-					foreach(ContactPoint contact in collision.contacts){
-						//float angle	=  Mathf.Tan(contact.normal.y/contact.normal.x);
-						if( contact.normal.y > 0f || contact.normal.x > 0.5f || contact.normal.x < -0.5f ){
-							isJumping = false;
-							Debug.DrawRay(contact.point, contact.normal * 5, Color.red,1,true);
-							if( particle && lastParticleSpawn < Time.time ){
-								lastParticleSpawn = Time.time + 0.25f;
-								ParticleSystem p = (ParticleSystem)Instantiate(particle,contact.point,Quaternion.identity);
-								p.transform.eulerAngles = contact.normal;
-								p.startSpeed = 4;
-							}
-						}
+		if(collision.gameObject && onGround){
+			foreach(ContactPoint contact in collision.contacts){
+				//float angle	=  Mathf.Tan(contact.normal.y/contact.normal.x);
+				if( contact.normal.y > 0f || contact.normal.x > 0.5f || contact.normal.x < -0.5f ){
+					isJumping = false;
+					Debug.DrawRay(contact.point, contact.normal * 5, Color.red,1,true);
+					if( particle && lastParticleSpawn < Time.time ){
+						lastParticleSpawn = Time.time + 0.25f;
+						ParticleSystem p = (ParticleSystem)Instantiate(particle,contact.point,Quaternion.identity);
+						p.transform.eulerAngles = contact.normal;
+						p.startSpeed = 4;
 					}
 				}
-			//}
+			}
 		}
 	}
 	
 	public void OnCollisionStay(Collision collision){
-		//onGround	= true;
+		/*
 		if( isAttachedToWall ){
 			if( isJumping ){
 				isAttachedToWall		= false;
@@ -104,11 +85,11 @@ public class UserInput : MonoBehaviour {
 				}
 			}
 		}
+		//*/
 	}
 	
 	public void OnCollisionExit(){
-		onGround	= false;
-	}	
+	}
 	
 	// Custom
 	
@@ -133,9 +114,9 @@ public class UserInput : MonoBehaviour {
 	}
 	public bool IsOnGround(){
 		if( nextGroundCheck < Time.time ){
-			nextGroundCheck	= Time.time + 0.1;
+			nextGroundCheck	= Time.time + 0.1f;
 			RaycastHit hit;
-			onGround		= Physics.CapsuleCast(transform.position,transform.position + collider.height,collider.radius, hit, 10);
+			onGround		= Physics.CapsuleCast(transform.position,transform.position + new Vector3(0,collider.height,0),collider.radius, -Vector3.up, out hit, 0.1f);
 		}
 		return onGround;
 	}
