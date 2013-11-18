@@ -9,8 +9,7 @@ public class Equipment : MonoBehaviour {
 	protected	string		name	= "Generic Equipment";
 	public		string		Name	{ get{return name;} protected set{name	= value;} }
 	
-	protected	Player player		;
-	protected	Player User			{ get{return player;} }
+	protected	PlayerController player	;
 	
 	protected	bool isEnabled		= true;
 	public		bool IsEnabled		{ get{return isEnabled;} set{isEnabled = value;} }
@@ -33,8 +32,11 @@ public class Equipment : MonoBehaviour {
 		Single
 	}
 	
+	void Awake(){
+		player	= transform.root.GetComponentInChildren<PlayerController>();
+	}
+	
 	public virtual void Start(){
-		player	= transform.root.GetComponentInChildren<Player>();
 		if( slots.Length > 0 ){
 			if(!player.RegisterEquipment(slots)){
 				Debug.Log("Failed to register equipment!");
@@ -56,7 +58,7 @@ public class Equipment : MonoBehaviour {
 	}
 	
 	public void AddToPlayer(){
-		player	= transform.root.GetComponentInChildren<Player>();
+		player	= transform.root.GetComponentInChildren<PlayerController>();
 	}
 	
 	public virtual void DoAction(Action act){

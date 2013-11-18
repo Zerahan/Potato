@@ -11,7 +11,7 @@ public class Boost : MonoBehaviour {
 	public GameObject body				;
 	public float	maxLightIntensity	= 4;
 	
-	private UserInput userInput;
+	private PlayerController player;
 	private bool 	isDebug 		= false;
 	private Light	light				;
 	
@@ -27,7 +27,7 @@ public class Boost : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start(){
-		userInput		= transform.root.GetComponent<UserInput>();
+		player			= transform.root.GetComponent<PlayerController>();
 		boostStrength	= boostStrength * Physics.gravity.magnitude;
 		moveStrength	= moveStrength * Physics.gravity.magnitude;
 		light			= transform.root.GetComponentInChildren<Light>();
@@ -48,7 +48,7 @@ public class Boost : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		moveDirection	= (userInput.GetMousePosition() - transform.position).normalized;
+		moveDirection	= (player.GetMousePosition() - transform.position).normalized;
 		useGravity		= true;
 		
 		if(energy > 0 && moveDirection.magnitude > 0){
