@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using GameSettings;
 
 public class PlayerController : MonoBehaviour {
-	
 	// Miscellaneous
-	public	bool	isHuman			= false;
-	private	Vector3	spawnPoint		= Vector3.zero;
-	public	float	minZRespawn		= -50;
-	private	bool	isControlLocked	= false;
-	public	bool	IsControlLocked	{get{return isControlLocked;}set{isControlLocked = value;Debug.Log("Controls locked outside of PlayerController!");}}
+	public	bool	isHuman				= false;
+	private	Vector3	spawnPoint			= Vector3.zero;
+	public	float	minZRespawn			= -50;
+	private	bool	isControlLocked		= false;
+	public	bool	IsControlLocked		{ get{return isControlLocked;} set{isControlLocked = value;Debug.Log("Controls locked outside of PlayerController!");} }
 	
 	// Collision particles
 	public	ParticleSystem	particle			;
@@ -24,10 +23,11 @@ public class PlayerController : MonoBehaviour {
 	private	Vector3	contactPoint		;
 	private	Vector3	contactNormal		;
 	
-	private	Vector3	wallNormal;
+	private	Vector3	wallNormal			;
+	private	Vector3	floorSlope			;
 	
 	public	enum	CollisionInfo		{
-		None	= 0,
+		None	= 0		,
 		Above	= 1 << 0,	// 1
 		Below	= 1 << 1,	// 2
 		Slope	= 1 << 2,	// 4
@@ -48,13 +48,14 @@ public class PlayerController : MonoBehaviour {
 	private	float		inputSmoothY	;
 	
 	private	bool		controlsLocked	= false;
-	public	bool		ControlsLocked	{get{return controlsLocked;}set{controlsLocked = value;Debug.Log("Controls locked outside of UserInput!");}}
+	public	bool		ControlsLocked	{ get{return controlsLocked;} set{controlsLocked = value;Debug.Log("Controls locked outside of UserInput!");} }
 	
 	private	Vector3		center;
 	public	Vector3		Center			{ get{return center + transform.position;} }
 	
 	// Camera
-	private	float		cameraZoom;
+	public	Camera		camera				;
+	private	float		cameraZoom			= 0.45f;
 	private	Vector3		cameraPosition		= Vector3.zero;
 	private	Vector3		cameraPositionMin	= new Vector3(0,2,-5);
 	private	Vector3		cameraPositionMax	= new Vector3(0,3,-20);
@@ -71,10 +72,10 @@ public class PlayerController : MonoBehaviour {
 	public	AnimationClip	jumpPoseAnimation;
 	
 	private	float	walkMaxAnimationSpeed	= 0.75f;
-	private	float	trotMaxAnimationSpeed	= 1.0f;
-	private	float	runMaxAnimationSpeed	= 1.0f;
+	private	float	trotMaxAnimationSpeed	= 1.00f;
+	private	float	runMaxAnimationSpeed	= 1.00f;
 	private	float	jumpAnimationSpeed		= 1.15f;
-	private	float	landAnimationSpeed		= 1.0f;
+	private	float	landAnimationSpeed		= 1.00f;
 	
 	// Equipment
 	public	List<GameObject> equipment;
@@ -88,6 +89,7 @@ public class PlayerController : MonoBehaviour {
 		center		= ((CapsuleCollider)transform.root.GetComponent<CapsuleCollider>()).center;
 		center.z	= 0;
 		rigidbody.velocity = Vector3.zero;
+		camera.transform.localPosition	= (cameraPositionMin * (1-cameraZoom)) + (cameraPositionMax * (cameraZoom));
 	}
 	
 	void Update(){
@@ -101,7 +103,7 @@ public class PlayerController : MonoBehaviour {
 		if( !IsControlLocked ){
 			if( cameraPosition	!= Vector3.zero ){
 				cameraPosition	= Vector3.zero;
-				Camera.main.transform.localPosition	= (cameraPositionMin * (1-cameraZoom)) + (cameraPositionMax * (cameraZoom));
+				camera.transform.localPosition	= (cameraPositionMin * (1-cameraZoom)) + (cameraPositionMax * (cameraZoom));
 			}
 			if( Input.GetAxis("Mouse ScrollWheel") != 0 ){
 				cameraZoom	-= 0.5f * (Input.GetAxis("Mouse ScrollWheel"));
@@ -110,13 +112,13 @@ public class PlayerController : MonoBehaviour {
 				}else if( cameraZoom > 1 ){
 					cameraZoom	= 1;
 				}
-				Camera.main.transform.localPosition	= (cameraPositionMin * (1-cameraZoom)) + (cameraPositionMax * (cameraZoom));
+				camera.transform.localPosition	= (cameraPositionMin * (1-cameraZoom)) + (cameraPositionMax * (cameraZoom));
 			}
 		}else{
 			if( cameraPosition == Vector3.zero ){
-				cameraPosition	= Camera.main.transform.position;
+				cameraPosition	= camera.transform.position;
 			}
-			Camera.main.transform.position	= cameraPosition;
+			camera.transform.position	= cameraPosition;
 		}
 		
 		// Animation
@@ -178,14 +180,12 @@ public class PlayerController : MonoBehaviour {
 			inputY			= Input.GetAxisRaw("Vertical");
 			inputSmoothX	= Input.GetAxis("Horizontal");
 			inputSmoothY	= Input.GetAxis("Vertical");
-			//if( nextCollisionInfo != (int)CollisionInfo.Wall ){
+			if( !IsOnGround() ){
 				rigidbody.AddForce(Physics.gravity,ForceMode.Acceleration);
-				velocity.x	= inputSmoothX * moveSpeed;
-			//}else{
-			//	if( canJump ){	// Stick to walls? Or maybe 1/4 of normal gravity when stuck to wall?
-			//		rigidbody.AddForce(Physics.gravity,ForceMode.Acceleration);
-			//	}
-			//}
+				velocity.x		= inputSmoothX * moveSpeed;
+			}else{
+				velocity		= floorSlope * (inputSmoothX * moveSpeed);
+			}
 			
 			if( (isJumping || (inputY == -1 && nextCollisionInfo == (int)CollisionInfo.Wall) || inputY == 1) && canJump ){
 				canJump		= false;
@@ -210,6 +210,7 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 		
+		floorSlope			*= 0;
 		lastCollisionInfo	= nextCollisionInfo;
 		nextCollisionInfo	= 0;
 	}
@@ -218,7 +219,7 @@ public class PlayerController : MonoBehaviour {
 		contactPoint	= collision.contacts[0].point;
 		contactNormal	= collision.contacts[0].normal;
 		foreach( ContactPoint contact in collision.contacts ){
-			Debug.DrawRay(contact.point,contact.normal*2,Color.red);
+			Debug.DrawRay(contact.point,contact.normal*1,Color.red);
 			
 			//Mathf.Cos(30 * Mathf.Deg2Rad)	= 0.8660254038f;
 			//Mathf.Cos(80 * Mathf.Deg2Rad)	= 0.1736481777f;
@@ -226,6 +227,11 @@ public class PlayerController : MonoBehaviour {
 			if( contact.normal.y >= 0.8660254038f ){
 				if( (nextCollisionInfo & (int)CollisionInfo.Below) == 0 )	nextCollisionInfo	|= (int)CollisionInfo.Below;
 				collisionChanged	= true;
+				floorSlope			= Vector3.right;
+				Vector3	normal		= contact.normal;
+				Vector3.OrthoNormalize(ref normal, ref floorSlope);
+				Debug.DrawRay(contact.point,contact.normal*2,Color.green);
+				Debug.DrawRay(contact.point,floorSlope*2,Color.green);
 			}else if( contact.normal.y >= 0.1736481777f ){
 				if( (nextCollisionInfo & (int)CollisionInfo.Slope) == 0 )	nextCollisionInfo	|= (int)CollisionInfo.Slope;
 				collisionChanged	= true;
@@ -246,7 +252,6 @@ public class PlayerController : MonoBehaviour {
 	
 	public bool RegisterEquipmentModel( GameObject obj, EquipmentSlot slot ){
 		if( equipment.Count > (int)slot && !equipment[(int)slot] ){
-			//Debug.Log("Registered " + obj.name + " to " + slot + ".");
 			equipment[(int)slot] = obj;
 			obj.GetComponentInChildren<Renderer>().enabled = false;
 			return true;
@@ -266,7 +271,6 @@ public class PlayerController : MonoBehaviour {
 		if( hasRegistered ){
 			foreach( EquipmentSlot slot in slots ){
 				equipment[(int)slot].GetComponentInChildren<Renderer>().enabled	= true;
-				//Debug.Log("Equipment registered in slot: " + equipment[(int)slot] + " @ " + slot + " | " + equipment[(int)slot].GetComponentInChildren<Renderer>().enabled);
 			}
 		}
 		return hasRegistered;
@@ -281,7 +285,7 @@ public class PlayerController : MonoBehaviour {
 	
 	public Vector3 GetMousePosition(){
 		Vector3 mp	= Input.mousePosition;
-		mp.z		= 0-Camera.main.transform.position.z;
-		return Camera.main.ScreenToWorldPoint(mp);
+		mp.z		= 0-camera.transform.position.z;
+		return camera.ScreenToWorldPoint(mp);
 	}
 }

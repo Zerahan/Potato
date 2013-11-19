@@ -78,19 +78,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c92b41e96d6104bb9e1b3e5797d803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakVelocity: 15
+  breakVelocity: 8
   particle: {fileID: 19800000, guid: 910d03781b59e5741af5570113a358d7, type: 2}
-  breakSounds:
-  - {fileID: 8300000, guid: f7f214a4cd8598e4e9054ae3c23aaf03, type: 3}
-  - {fileID: 8300000, guid: df7b6b42d2e7f994cac38cd88aa62dbd, type: 3}
-  - {fileID: 8300000, guid: 660fbe9517f32ad44a18b4c464042fc0, type: 3}
-  - {fileID: 8300000, guid: d3a78fa83de624242bf074feec3c6fd1, type: 3}
-  - {fileID: 8300000, guid: e99c8ef899f8ba445b6f76955ca2c3d8, type: 3}
-  - {fileID: 8300000, guid: c9b3df0a02cdb0040b8963ff766d72ba, type: 3}
-  - {fileID: 8300000, guid: a5fa591a12fbda245a32f440649db6cb, type: 3}
-  - {fileID: 8300000, guid: b088fdc3621fe2e4e991fc3843b77486, type: 3}
-  - {fileID: 8300000, guid: a45e44f15ddeec3479934f9a663ead11, type: 3}
-  - {fileID: 8300000, guid: 82c5b8ac746f079459379d300e69c806, type: 3}
+  breakSounds: []
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

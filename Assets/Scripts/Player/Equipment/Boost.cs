@@ -31,6 +31,7 @@ public class Boost : MonoBehaviour {
 		boostStrength	= boostStrength * Physics.gravity.magnitude;
 		moveStrength	= moveStrength * Physics.gravity.magnitude;
 		light			= transform.root.GetComponentInChildren<Light>();
+		light.intensity	= 0;
 		maxEnergy		= boostStrength * maxBoosts;
 		if (isDebug) {
 			energy = 500f;
@@ -42,7 +43,7 @@ public class Boost : MonoBehaviour {
 	
 	
 	void Update(){
-		light.intensity = Mathf.Sqrt(Mathf.Floor(energy/boostStrength)/maxBoosts) * maxLightIntensity;
+		//light.intensity = Mathf.Sqrt(Mathf.Floor(energy/boostStrength)/maxBoosts) * maxLightIntensity;
 	}
 	
 	

@@ -2,15 +2,18 @@
 using System.Collections;
 
 public class BreakableObject : MonoBehaviour {
-	public	float	breakVelocity	= 15;
+	public	float	breakVelocity	= 16;
 	private	bool	isDestroyed		;
 	public	bool	IsDestroyed		{ get{return isDestroyed;} }
 	
 	public	ParticleSystem	particle	;
 	public	AudioClip[]		breakSounds	;
 	
+	// get relative angle, use that to determine force?
+	// normalize
 	public void OnCollisionEnter( Collision collision ){
-		if( collision.relativeVelocity.magnitude >= breakVelocity ){
+		if( (collision.relativeVelocity.magnitude * (1-Vector3.Dot(collision.contacts[0].normal,collision.rigidbody.velocity.normalized))) >= breakVelocity ){
+			//Debug.Log( collision.relativeVelocity.magnitude * (1-Vector3.Dot(collision.contacts[0].normal,collision.rigidbody.velocity.normalized)) );
 			Kill();
 		}
 	}
