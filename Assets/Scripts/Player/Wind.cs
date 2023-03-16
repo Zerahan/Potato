@@ -19,9 +19,9 @@ public class Wind : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//*
-		velocity = rigidbody.velocity.magnitude;
+		velocity = GetComponent<Rigidbody>().velocity.magnitude;
 		if (velocity > 4) {
-			sound.volume = Mathf.Min(0.1f, 0.1f * rigidbody.velocity.magnitude);
+			sound.volume = Mathf.Min(0.1f, 0.1f * GetComponent<Rigidbody>().velocity.magnitude);
 		}else{
 			sound.volume = 0;
 		}

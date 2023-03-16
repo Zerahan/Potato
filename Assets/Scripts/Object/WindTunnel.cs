@@ -12,7 +12,7 @@ public class WindTunnel : MonoBehaviour{
 	}
 	
 	public void OnTriggerStay(Collider collider){
-		collider.rigidbody.AddForce(wind);
+		collider.GetComponent<Rigidbody>().AddForce(wind);
 	}
 	
 	public void OnDrawGizmos(){

@@ -34,7 +34,7 @@ public class Boost : MonoBehaviour {
 		maxEnergy		= boostStrength * maxBoosts;
 		if (isDebug) {
 			energy = 500f;
-			transform.root.rigidbody.useGravity = false;
+			transform.root.GetComponent<Rigidbody>().useGravity = false;
 		}else{
 			energy = boostStrength * startBoosts;
 		}
@@ -54,7 +54,7 @@ public class Boost : MonoBehaviour {
 		if(energy > 0 && moveDirection.magnitude > 0){
 			
 			if( Input.GetButtonDown(BUTTON) && energy >= boostStrength ){
-				transform.root.rigidbody.velocity += moveDirection.normalized * boostStrength;
+				transform.root.GetComponent<Rigidbody>().velocity += moveDirection.normalized * boostStrength;
 				if (!isDebug) {
 					energy -= boostStrength;
 				}

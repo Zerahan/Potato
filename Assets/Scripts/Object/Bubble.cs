@@ -8,7 +8,7 @@ public class Bubble : MonoBehaviour {
 	public float			maxAge { get; set; }
 	private float			age = 0;
 	private float			scale = 0;
-	private float			sizeMag = 0;
+	//private float			sizeMag = 0;
 	private float			maxSize = 1f;
 	private float			maxLightRange = 10;
 	private bool			isDestroyed;
@@ -32,11 +32,11 @@ public class Bubble : MonoBehaviour {
 		
 		transform.localScale = scale * maxSize * Vector3.one;		
 		transform.GetComponent<Light>().range = scale * maxLightRange + 1.25f;
-		rigidbody.drag = scale * 0.5f + 0.1f;
+		GetComponent<Rigidbody>().drag = scale * 0.5f + 0.1f;
 	}
 	
 	void FixedUpdate(){
-		rigidbody.AddForce(Vector3.up * Physics.gravity.magnitude * (0.25f));
+		GetComponent<Rigidbody>().AddForce(Vector3.up * Physics.gravity.magnitude * (0.25f));
 	}
 	
 	public bool IsDestroyed(){
@@ -49,12 +49,12 @@ public class Bubble : MonoBehaviour {
 			isDestroyed = true;
 			PopBubble();
 		}else{
-			rigidbody.velocity += collision.contacts[0].normal * 1.5f;
+			GetComponent<Rigidbody>().velocity += collision.contacts[0].normal * 1.5f;
 		}
 	}
 	
 	public void OnCollisionStay( Collision collision ){
-		rigidbody.velocity += collision.contacts[0].normal * 1f;
+		GetComponent<Rigidbody>().velocity += collision.contacts[0].normal * 1f;
 	}
 	
 	private void PopBubble(){

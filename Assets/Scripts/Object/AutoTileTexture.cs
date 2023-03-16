@@ -16,7 +16,7 @@ public class AutoTileTexture : MonoBehaviour {
 	 
 	}
 	void OnDrawGizmos() {
-	 	this.gameObject.renderer.sharedMaterial.SetTextureScale("_MainTex",new Vector2(scale * this.gameObject.transform.lossyScale.x, scale * this.gameObject.transform.lossyScale.y));
+	 	this.gameObject.GetComponent<Renderer>().sharedMaterial.SetTextureScale("_MainTex",new Vector2(scale * this.gameObject.transform.lossyScale.x, scale * this.gameObject.transform.lossyScale.y));
 	}
 }
 #endif

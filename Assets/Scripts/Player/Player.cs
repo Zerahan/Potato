@@ -93,8 +93,8 @@ public class Player : MonoBehaviour {
 	
 	public void Update () {
 		float vel	= 0f;
-		if(rigidbody.velocity.x > 0.1 || rigidbody.velocity.x < -0.1){
-			vel	= rigidbody.velocity.x;
+		if(GetComponent<Rigidbody>().velocity.x > 0.1 || GetComponent<Rigidbody>().velocity.x < -0.1){
+			vel	= GetComponent<Rigidbody>().velocity.x;
 			if(vel > 2){
 				vel = 2;
 			}
@@ -129,17 +129,17 @@ public class Player : MonoBehaviour {
 		// Reset if the player dropped too low.
 		if(transform.position.y < dropAmount){
 			transform.position = new Vector3(0,0,0);
-			rigidbody.velocity = new Vector3(0,0,0);
+			GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
 		}
 		
 		if(_animation) {
-			if(rigidbody.velocity.magnitude < 0.1){
-				rigidbody.velocity	= Vector3.zero;
+			if(GetComponent<Rigidbody>().velocity.magnitude < 0.1){
+				GetComponent<Rigidbody>().velocity	= Vector3.zero;
 				_animation.CrossFade(idleAnimation.name);
 			}else{
 				if( !userInput.IsOnGround() ){
 					//debugFloat	= rigidbody.velocity.y;
-					if(rigidbody.velocity.y > 0) {
+					if(GetComponent<Rigidbody>().velocity.y > 0) {
 						_animation[jumpPoseAnimation.name].speed = jumpAnimationSpeed;
 						_animation[jumpPoseAnimation.name].wrapMode = WrapMode.ClampForever;
 						_animation.CrossFade(jumpPoseAnimation.name);
@@ -149,11 +149,11 @@ public class Player : MonoBehaviour {
 						_animation.CrossFade(jumpPoseAnimation.name);				
 					}
 				}else{
-					if(rigidbody.velocity.magnitude > 12){
-						_animation[runAnimation.name].speed		= Mathf.Clamp(rigidbody.velocity.magnitude, 0.0f, runMaxAnimationSpeed);
+					if(GetComponent<Rigidbody>().velocity.magnitude > 12){
+						_animation[runAnimation.name].speed		= Mathf.Clamp(GetComponent<Rigidbody>().velocity.magnitude, 0.0f, runMaxAnimationSpeed);
 						_animation.CrossFade(runAnimation.name,0.3f);
 					}else{
-						_animation[walkAnimation.name].speed	= Mathf.Clamp(rigidbody.velocity.magnitude, 0.0f, walkMaxAnimationSpeed);
+						_animation[walkAnimation.name].speed	= Mathf.Clamp(GetComponent<Rigidbody>().velocity.magnitude, 0.0f, walkMaxAnimationSpeed);
 						_animation.CrossFade(walkAnimation.name,0.5f);
 					}
 				}

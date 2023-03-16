@@ -11,7 +11,7 @@ public class UserInput : MonoBehaviour {
 	public		ParticleSystem particle			;	// The particles that are spawned when THIS player collides with something
 	public		float		moveForceFactor		= 10f;
 	public		float		walkSpeed			= 10f;	
-	private		float		frictionForce		= 200f;	
+	//private		float		frictionForce		= 200f;	
 	
 	private		Player		player				;
 	private		TimedRace	gamemode			;
@@ -48,7 +48,7 @@ public class UserInput : MonoBehaviour {
 		collider	= transform.root.GetComponent<CapsuleCollider>();
 		center		= ((CapsuleCollider)collider).center;
 		center.z	= 0;
-		rigidbody.velocity = Vector3.zero;
+		GetComponent<Rigidbody>().velocity = Vector3.zero;
 	}
 	
 	public void Update(){
@@ -81,7 +81,9 @@ public class UserInput : MonoBehaviour {
 								lastParticleSpawn = Time.time + 0.25f;
 								ParticleSystem p = (ParticleSystem)Instantiate(particle,contact.point,Quaternion.identity);
 								p.transform.eulerAngles = contact.normal;
-								p.startSpeed = 4;
+								var main = p.main;
+								//p.main.startSpeed = 4;
+								main.startSpeed = 4;
 							}
 						}
 					}
@@ -133,9 +135,15 @@ public class UserInput : MonoBehaviour {
 	}
 	public bool IsOnGround(){
 		if( nextGroundCheck < Time.time ){
-			nextGroundCheck	= Time.time + 0.1;
-			RaycastHit hit;
-			onGround		= Physics.CapsuleCast(transform.position,transform.position + collider.height,collider.radius, hit, 10);
+			nextGroundCheck	= Time.time + 0.1f;
+			RaycastHit hit = new RaycastHit();
+			onGround		= Physics.CapsuleCast(
+				transform.position,
+				transform.position + (Vector3.up * -1f * collider.height),
+				collider.radius,
+				transform.up * -1f,
+				out hit,
+				10);
 		}
 		return onGround;
 	}
@@ -152,13 +160,13 @@ public class UserInput : MonoBehaviour {
 		bool isGrappled		= GetComponentInChildren<Grapple>().IsActive;
 		
 		moveForce = new Vector3(0,0,0);
-		velocity = rigidbody.velocity;
+		velocity = GetComponent<Rigidbody>().velocity;
 		
 		
 		if(onGround && !isJumping){
-			velocityMag = rigidbody.velocity.magnitude;
+			velocityMag = GetComponent<Rigidbody>().velocity.magnitude;
 			if (velocityMag < 1 && inputX == 0){
-				rigidbody.velocity *= 0f;
+				GetComponent<Rigidbody>().velocity *= 0f;
 				moveForce *= 0f;
 				return;
 			}
@@ -185,7 +193,7 @@ public class UserInput : MonoBehaviour {
 		
 		if( onGround && !isJumping && (jumpbutton || inputSmoothY > 0) ){
 			isJumping = true;
-			rigidbody.velocity	= rigidbody.velocity + new Vector3(0,11,0);
+			GetComponent<Rigidbody>().velocity	= GetComponent<Rigidbody>().velocity + new Vector3(0,11,0);
 		}
 		
 		// If the player moves, start the timer
@@ -216,11 +224,11 @@ public class UserInput : MonoBehaviour {
 			moveForce.x = moveForce.x + frictionForceVal;
 		}
 		*/
-		rigidbody.AddForce(moveForce);
+		GetComponent<Rigidbody>().AddForce(moveForce);
 		//yVelocity	= moveTarget.y;
 		
-		if(rigidbody.velocity.magnitude > maxVelocity){
-			rigidbody.velocity	= rigidbody.velocity.normalized * maxVelocity;
+		if(GetComponent<Rigidbody>().velocity.magnitude > maxVelocity){
+			GetComponent<Rigidbody>().velocity	= GetComponent<Rigidbody>().velocity.normalized * maxVelocity;
 		}
 	}
 }

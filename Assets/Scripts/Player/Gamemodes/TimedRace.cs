@@ -45,7 +45,7 @@ public class TimedRace : MonoBehaviour {
 		endTimer	= 0;
 		player.GetComponent<UserInput>().SetControlLocked(false);
 		player.transform.position = new Vector3(0,0,0);
-		player.rigidbody.velocity = new Vector3(0,0,0);
+		player.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
 		//player.renderer.enabled = true;
 	}
 	
@@ -64,12 +64,12 @@ public class TimedRace : MonoBehaviour {
 		Grapple hook = transform.root.GetComponentInChildren<Grapple>();
 		hook.DoAction(Grapple.Action.Disable);
 		if(hasWon){
-			player.rigidbody.velocity = new Vector3(player.rigidbody.velocity.x*0.25f,player.rigidbody.velocity.y,player.rigidbody.velocity.z*0.25f);
+			player.GetComponent<Rigidbody>().velocity = new Vector3(player.GetComponent<Rigidbody>().velocity.x*0.25f,player.GetComponent<Rigidbody>().velocity.y,player.GetComponent<Rigidbody>().velocity.z*0.25f);
 			if( endTime <= recordTime){
 				recordTime = endTime;
 			}
 		}else{
-			player.rigidbody.velocity = new Vector3(0,0,0);
+			player.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
 		}
 	}
 	

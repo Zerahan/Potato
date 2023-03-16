@@ -39,7 +39,7 @@ public class Grapple : Equipment {
 		lineRenderer.SetWidth(0.2f,0.2f);
 		lineRenderer.SetVertexCount(2);
 		
-		lineRenderer.renderer.enabled	= false;
+		lineRenderer.GetComponent<Renderer>().enabled	= false;
 	}
 	
 	public override void Update(){
@@ -57,7 +57,7 @@ public class Grapple : Equipment {
 	public void FixedUpdate(){
 		if(IsActive){
 			//transform.root.rigidbody.AddForce(pullDirection.normalized*pullForce);
-			transform.root.rigidbody.velocity	= transform.root.rigidbody.velocity + pullDirection.normalized*pullForce;
+			transform.root.GetComponent<Rigidbody>().velocity	= transform.root.GetComponent<Rigidbody>().velocity + pullDirection.normalized*pullForce;
 		}
 	}
 	
@@ -83,7 +83,7 @@ public class Grapple : Equipment {
 	protected override void OnActiveStay(){
 		if( IsActive ){
 			if(!hitObject || (hitObject.GetComponent<BreakableObject>() && hitObject.GetComponent<BreakableObject>().IsDestroyed)){
-				lineRenderer.renderer.enabled	= false;
+				lineRenderer.GetComponent<Renderer>().enabled	= false;
 				DoAction(Action.Disable);
 			}else{
 				lineRenderer.SetPosition(0,player.GetSlotPosition(slots[0]));
@@ -102,7 +102,7 @@ public class Grapple : Equipment {
 				hitPoint	= raycast.point - hitObject.position;
 				lineRenderer.SetPosition(0,player.GetSlotPosition(slots[0]));
 				lineRenderer.SetPosition(1,hitObject.position + hitPoint);
-				lineRenderer.renderer.enabled = true;
+				lineRenderer.GetComponent<Renderer>().enabled = true;
 			}
 		}
 	}
@@ -111,7 +111,7 @@ public class Grapple : Equipment {
 		IsActive	= false;
 		hitPoint	= Vector3.zero;
 		hitObject	= null;
-		lineRenderer.renderer.enabled = false;
+		lineRenderer.GetComponent<Renderer>().enabled = false;
 	}
 	
 	public void OnDrawGizmos(){
